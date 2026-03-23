@@ -622,10 +622,9 @@ def main():
         return
       elif ch % 7 == 0:
         return "non"
-
+"""
 ### credit
 def credit():
-  var_credit = ""
   rect(x1,y1,x2,y2,c[0])
   rect(x1+33,y1+50,x2-65,y2-90,c[1])
   ds("[EXE]",x2-80,y2-35,c[1],c[0])
@@ -637,8 +636,8 @@ def credit():
     sleep(0.1)
     if ke(52):
         return main()
-
-var_credit=credit()
+"""
+var_credit=main()
 
 while var_credit != "non":
   var_credit=main()
