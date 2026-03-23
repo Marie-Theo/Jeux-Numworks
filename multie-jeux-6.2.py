@@ -4,22 +4,26 @@ from math import *
 from time import *
 from random import *
 
-c = (255,180,40),(255,255,255),(0,0,0),(200,200,200),(255, 0, 0),(0, 255, 0),(0, 0, 255)
+c = [[255,181,49],[255,255,255],[0,0,0],[200,200,200],[255, 0, 0],[0, 255, 0],[0, 0, 255]]
 x1,y1,x2,y2 = 0,0,320,225
-para = {"inter":0,"adv":0,"nb_mine":15,"drap":0,"d_win":0,"sc_1":0,"sc_2":0,"v_snake":1,"v_pong":3,"main":1,"co_txt":1}
+para = {"inter":0,"adv":0,"nb_mine":15,"drap":0,"d_win":0,"sc_1":0,"sc_2":0,"v_s":1,"v_p":3,"main":0,"c_txt":0}
 m_adver = ("bot random"),("bot ia"),("2 j")
+dif = ("easy","normal","hard")
+bg = ["black on white","white on black"]
+main_c = ["jaune","cyan","rouge","mauve"]
+m_col = [[255,181,49],[6,150,187],[227,35,34],[198,35,126]]
 
 def morpion():
   global para
   rect(x1,y1,95,y2,c[0])
   rect(95,y1,225,y2,c[1])
-  sc = {"x":0,"o":0,"reload":False}
-  
+  sc= {"x":0,"o":0,"reload":False}
+
   def draw_x(x,y):
     for i in range(35):
       rect(117+i+y*72,i+x*72+20,4,4,c[6])
       rect(117+i+y*72,-i+34+x*72+20,4,4,c[6])
-  
+
   def draw_o(x0,y0,r):
     for i in range(4):
       xd=x0-int((r-i)/sqrt(2))
@@ -33,13 +37,13 @@ def morpion():
           y2=y0+x0-x1
           sp(x2,y2,c[4])
           x1,y1=x2,y2
-  
+
   def case(x,y):
     for i in range(3):
       for j in range(3):
         rect(117+i*72,j*72+62,38,4,c[1])
     rect(117+y*72,x*72+62,38,4,c[3])
-    
+
   def win(j): 
     for i in range(3):
       if pla[i].count(j) == 3:
@@ -95,12 +99,12 @@ def morpion():
         if ch_x>2: 
           ch_x=0
         case(ch_x,ch_y)
-      if ke(3):
+      if ke(0):
         ch_y-=1
         if ch_y<0: 
           ch_y=2
         case(ch_x,ch_y)
-      elif ke(0):
+      elif ke(3):
         ch_y+=1
         if ch_y>2: 
           ch_y=0
@@ -175,12 +179,12 @@ def demineur():
   
   while True:
     gri = [[],[],[],[],[],[],[],[],[],[],[],[]]
-    decouvert = [[],[],[],[],[],[],[],[],[],[],[],[]]
+    dec = [[],[],[],[],[],[],[],[],[],[],[],[]]
     ### crée maps
     for i in range(12):
       for j in range(10):
         gri[i].append(0)
-        decouvert[i].append(False)
+        dec[i].append(False)
         rect(65+i*21,6+j*21,20,20,c[1])
     ### initialiser les mine
     for z in range(para["nb_mine"]):
@@ -215,8 +219,8 @@ def demineur():
               for y_ in range(3):
                 y__= j+1-y_
                 if 0 <=x__<= 11 and 0<= y__ <= 9 :
-                  if gri[x__][y__] == 0 and decouvert[i][j] == True:
-                    decouvert[x__][y__] = True
+                  if gri[x__][y__] == 0 and dec[i][j] == True:
+                    dec[x__][y__] = True
                     draw_case(x__,y__,"other")
     
     def draw_drap(x,y):
@@ -225,24 +229,24 @@ def demineur():
         for j in range(l):
           sp(x-l+9,y-j+4,c[4])
     
-    def draw_case(x,y,c):
-      if c =="draw_drap":
+    def draw_case(x,y,ch):
+      if ch =="draw_drap":
         draw_drap(30,10)
         return
-      if c == "vide":
+      if ch== "vide":
         coul = c[1]
-      elif c == "other":
+      elif ch== "other":
         rect(65+x*21,6+y*21,20,20,c[5])
         return
       else:
         coul = c[3]
       rect(65+x*21,6+y*21,20,20,coul)
-      if decouvert[x][y] == False:
+      if dec[x][y] == False:
         return
-      elif decouvert[x][y] == "drap" :
+      elif dec[x][y] == "drap" :
         draw_drap(70+x*21,11+y*21)
       else :
-        if gri[x][y] == 0 and  c == "vide" :
+        if gri[x][y] == 0 and  ch== "vide" :
           rect(65+x*21,6+y*21,20,20,c[5])
         elif gri[x][y] == 1:
           ds("1",65+x*21+5,6+y*21,c[5],coul)
@@ -261,7 +265,7 @@ def demineur():
       drap_bon = 0
       for x in range(12):
         for y in range(10):
-          if gri[x][y] == "mine" and decouvert[x][y] == "drap":
+          if gri[x][y] == "mine" and dec[x][y] == "drap":
             drap_bon += 1
       if para["nb_mine"] == drap_bon:
         para["d_win"] += 1
@@ -288,36 +292,36 @@ def demineur():
         if ch_y>9: 
           ch_y=0
         draw_case(ch_x,ch_y,"select")
-      if ke(3):
+      if ke(0):
         draw_case(ch_x,ch_y,"vide")
         ch_x-=1
         if ch_x<0: 
           ch_x=11
         draw_case(ch_x,ch_y,"select")
-      elif ke(0):
+      elif ke(3):
         draw_case(ch_x,ch_y,"vide")
         ch_x+=1
         if ch_x>11: 
           ch_x=0
         draw_case(ch_x,ch_y,"select")
-      if ke(52) and decouvert[ch_x][ch_y] == False:
-        decouvert[ch_x][ch_y] = True
+      if ke(52) and dec[ch_x][ch_y] == False:
+        dec[ch_x][ch_y] = True
         draw_case(ch_x,ch_y,"select")
         if gri[ch_x][ch_y] == "b":
           for x in range(12):
             for y in range(10):
-              decouvert[x][y] = True
+              dec[x][y] = True
               draw_case(x,y,"vide")
           sleep(3)
           break
         elif gri[ch_x][ch_y] == 0:
           decouvrir()
       if ke(4) :
-        if decouvert[ch_x][ch_y] == False and para["nb_mine"] > para["drap"]:
-          decouvert[ch_x][ch_y] = "drap"
+        if dec[ch_x][ch_y] == False and para["nb_mine"] > para["drap"]:
+          dec[ch_x][ch_y] = "drap"
           para["drap"]+=1
-        elif decouvert[ch_x][ch_y] == "drap":
-          decouvert[ch_x][ch_y] = False
+        elif dec[ch_x][ch_y] == "drap":
+          dec[ch_x][ch_y] = False
           para["drap"]-=1
         draw_case(ch_x,ch_y,"select")
       if para["nb_mine"] == para["drap"]:
@@ -331,7 +335,7 @@ def pong():
   rect(0,0,x2,y2,c[1])
   while True:
     e_y=y =b_y= y2//2
-    b_x, = x2//2
+    b_x = x2//2
     b_x_speed, b_y_speed= randint(3,7),randint(3,7)
     rect(0,0,20,y2,c[1])
     rect(x2-20,0,20,y2,c[1])
@@ -370,7 +374,7 @@ def pong():
       elif b_x <= 5:
         para["sc_2"]+=1
         break
-      if b_x > x2-x2//para["v_pong"]:
+      if b_x > x2-x2//para["v_p"]:
         rect(x2-20,e_y-30,10,60,c[1])
         if b_y < e_y-20 and  e_y >30:
           e_y -= 6
@@ -405,7 +409,7 @@ def snake():
     rect(b_x*20+2,b_y*20+2,16,16,c[4])
     
     while True :
-      sleep(0.3/para["v_snake"])
+      sleep(0.3/para["v_s"])
       if ke(17):
         return True
       direc=dire
@@ -414,9 +418,9 @@ def snake():
           dire = "up"
         elif ke(2) and direc!="up":
           dire = "down"
-        elif ke(3) and direc!="right":
+        elif ke(0) and direc!="right":
           dire = "left"
-        elif ke(0) and direc!="left":
+        elif ke(3) and direc!="left":
           dire = "right"
       if dire=="up" :
         s_y-=1
@@ -463,10 +467,10 @@ def snake():
         else:
           col_txt = 5
         ds(sc_txt[i],120+i*20,0,c[1],c[col_txt])
-            
+ 
 ### modifier les setting
 def setting():
-  global para,m_adver
+  global para,m_adver,dif
   def d_sett_1():
     rect(x1,y1,x2,y2,c[0])
     rect(65,20,190,180,c[1])
@@ -491,63 +495,55 @@ def setting():
       rect(70,45,100,18,c[1])
       ds(m_adver[para["adv"]%3],70,45,c[2],c[1])
       ds(str(para["nb_mine"]),130,85,c[2],c[1])
-      ds("vitesse * {}".format(para["v_snake"]),70,125,c[2],c[1])
+      ds("vitesse * {}".format(para["v_s"]),70,125,c[2],c[1])
       rect(70,165,170,18,c[1])
-      if para["v_pong"] == 4:
-        ds("dificulter easy",70,165,c[2],c[1])
-      elif para["v_pong"] == 3:
-        ds("dificulter normal",70,165,c[2],c[1])
-      elif para["v_pong"] == 2:
-        ds("dificulter hard",70,165,c[2],c[1])
+      ds("dificulter {}".format(dif[para["v_p"]%3-2]),70,165,c[2],c[1])
       if para["inter"]%6 == 0:
         ds(m_adver[para["adv"]%3],70,45,c[2],c[3])
       elif para["inter"]%6 == 1:
         rect(130,85,20,18,c[1])
         ds(str(para["nb_mine"]),130,85,c[2],c[3])
       elif para["inter"]%6 == 2:
-        ds("vitesse * {}".format(para["v_snake"]),70,125,c[2],c[3])
+        ds("vitesse * {}".format(para["v_s"]),70,125,c[2],c[3])
       elif para["inter"]%6 == 3:
-        if para["v_pong"] == 4:
-          ds("dificulter easy",70,165,c[2],c[3])
-        elif para["v_pong"] == 3:
-          ds("dificulter normal",70,165,c[2],c[3])
-        elif para["v_pong"] == 2:
-          ds("dificulter hard",70,165,c[2],c[3])
+        ds("{}".format(dif[para["v_p"]%3-2]),180,165,c[2],c[3])
     else:
       d_sett_2()
+      ds("{}".format(main_c[para["main"]]),70,45,c[2],c[1])
+      ds("{}".format(bg[para["c_txt"]]),70,85,c[2],c[1])
       if para["inter"]%6 == 4:
-        ds(m_adver[para["adv"]%3],70,45,c[2],c[3])
+        ds("{}".format(main_c[para["main"]]),70,45,c[2],c[3])
       elif para["inter"]%6 == 5:
-        ds(str(para["nb_mine"]),70,85,c[2],c[3])
+        ds("{}".format(bg[para["c_txt"]]),70,85,c[2],c[3])
 
   while True:
     sleep(0.1)
-    if ke(3):
+    if ke(0):
       if para["inter"]%6 == 0:  
         para["adv"]-=1
       elif para["inter"]%6 == 1 and para["nb_mine"]> 1 :  
         para["nb_mine"]-=1
-      elif para["inter"]%6 == 2 and para["v_snake"]> 1 :  
-        para["v_snake"]-=1
-      elif para["inter"]%6 == 3 and para["v_pong"]< 4 :
-        para["v_pong"]+=1
-      elif para["inter"]%6 == 4:
+      elif para["inter"]%6 == 2 and para["v_s"]> 1 :  
+        para["v_s"]-=1
+      elif para["inter"]%6 == 3 and para["v_p"]> 2 :
+        para["v_p"]-=1
+      elif para["inter"]%6 == 4 and para["c_txt"] > 0:
         para["main"]-=1
-      elif para["inter"]%6 == 5 and para["co_txt"] > 1:
-        para["co_txt"]-=1
-    elif ke(0):
+      elif para["inter"]%6 == 5 and para["main"] > 0:
+        para["c_txt"]-=1
+    elif ke(3):
       if para["inter"]%6 == 0: 
         para["adv"]+=1
       elif para["inter"]%6 == 1 and para["nb_mine"]< 30 :  
         para["nb_mine"]+=1
-      elif para["inter"]%6 == 2 and para["v_snake"]< 3 :  
-        para["v_snake"]+=1
-      elif para["inter"]%6 == 3 and para["v_pong"]> 2 :
-        para["v_pong"]-=1
-      elif para["inter"]%6 == 4:
+      elif para["inter"]%6 == 2 and para["v_s"]< 3 :  
+        para["v_s"]+=1
+      elif para["inter"]%6 == 3 and para["v_p"]< 4 :
+        para["v_p"]+=1
+      elif para["inter"]%6 == 4 and para["main"] < 3:
         para["main"]+=1
-      elif para["inter"]%6 == 5 and para["co_txt"] < 2:
-        para["co_txt"]+=1
+      elif para["inter"]%6 == 5 and para["c_txt"] < 1:
+        para["c_txt"]+=1
     elif ke(1):
       para["inter"]-=1
     elif ke(2):
@@ -612,10 +608,13 @@ def main():
         return
       elif ch % 7 == 5:
         setting()
-        if para["co_txt"] == 1:
-          c[1],c[2]= (255,255,255),(0,0,0)
+        if para["c_txt"] == 0:
+          c[1]=[255,255,255]
+          c[2]=[0,0,0]
         else :
-          c[1],c[2] = (0,0,0),(255,255,255)
+          c[1]=[0,0,0]
+          c[2]=[255,255,255]
+        c[0]= m_col[para["main"]]
         return 
       elif ch % 7 == 6:
         credit()
