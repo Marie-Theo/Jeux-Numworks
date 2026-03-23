@@ -6,7 +6,7 @@ from random import *
 
 couleur = (255,180,40),(255,255,255),(0,0,0),(200,200,200),(255, 0, 0),(0, 255, 0),(0, 0, 255)
 x1,y1,x2,y2 = 0,0,320,225
-paramètre = 0
+paramètre = {"inter":0,"adversaire":0,"nb_mine":10}
 
 def morpion():
   global paramètre
@@ -51,7 +51,6 @@ def morpion():
           score["reload"] = True
       if score["reload"] == True and j != "-" :
         score[j] += 1 
-        print("winer",j,"\n",score[j])
         return
     if j == "x":
       score["reload"] = True
@@ -60,10 +59,10 @@ def morpion():
           if plateau[i][j] == "-" :
             score["reload"] = False
             return
-      print("match null")
       
         
         
+  fill_rect(105,y1+10,205,y2-20,couleur[2])
   while True:
     l_un = "x : ",str(score["x"])
     l_trois = "o : ",str(score["o"])
@@ -76,7 +75,6 @@ def morpion():
     draw_string(l_1,25,85,couleur[6],couleur[0])
     draw_string(l_2,25,105,couleur[2],couleur[0])
     draw_string(l_3,25,125,couleur[4],couleur[0])
-    fill_rect(105,y1+10,205,y2-20,couleur[2])
     for i in range(3):
       for j in range(3):
         fill_rect(105+i*72,10+j*72,62,62,couleur[1])
@@ -112,14 +110,13 @@ def morpion():
           draw_x(choix_x,choix_y)
         else:
           draw_o(choix_y*72+135,choix_x*72+40,21)
-        print(plateau[0],"\n",plateau[1],"\n",plateau[2])
         win(joueur)
         if score["reload"]== True:
           score["reload"]= False
           sleep(1)
           break
         else:
-          if paramètre%3 == 0:
+          if paramètre["adversaire"]%3 == 0:
             while True:
               choix_y,choix_x = randint(0,2),randint(0,2)
               if plateau[choix_x][choix_y]=="-":
@@ -127,7 +124,7 @@ def morpion():
                 plateau[choix_x][choix_y]="o"
                 draw_o(choix_y*72+135,choix_x*72+40,21)
                 break
-          elif paramètre%3 == 1:
+          elif paramètre["adversaire"]%3 == 1:
             while True:
               choix_x,choix_y = 4,4
               play = "x"
@@ -136,25 +133,18 @@ def morpion():
                       for y in range(3):
                           grille = [0,1,2]
                           del(grille[y])
-                          print(grille)
                           if plateau[x][grille[0]] == plateau[x][grille[1]] == play and plateau[x][y] == "-":
                             choix_x,choix_y = x,y 
-                            print("-")
                           if plateau[grille[0]][x] == plateau[grille[1]][x] == play and plateau[y][x] == "-":
                             choix_x,choix_y = y,x 
-                            print("|")
                           if plateau[grille[0]][grille[0]] == plateau[grille[1]][grille[1]] == play and plateau[y][y] == "-":
                             choix_x,choix_y = y,y 
-                            print("|_")
                   if plateau[1][1] == plateau[0][2] == play and plateau[2][0] == "-":
                     choix_x,choix_y = 2,0 
-                    print("/")
                   if plateau[1][1] == plateau[2][0] == play and plateau[0][2] == "-":
                     choix_x,choix_y = 0,2 
-                    print("/")
                   if plateau[2][0] == plateau[0][2] == play and plateau[1][1] == "-":
-                    choix_x,choix_y = 1,1 
-                    print("/")
+                    choix_x,choix_y = 1,1
                   play = "o"
               if choix_x == 4 and choix_y == 4:
                 while True:
@@ -165,43 +155,155 @@ def morpion():
               plateau[choix_x][choix_y]="o"
               draw_o(choix_y*72+135,choix_x*72+40,21)
               break
-          elif paramètre%3 == 2:
+          elif paramètre["adversaire"]%3 == 2:
             if joueur == "x":
               joueur = "o"
             else:
               joueur = "x"
-          print(plateau[0],"\n",plateau[1],"\n",plateau[2])
           win("o")
           if score["reload"]== True:
             score["reload"]= False
             sleep(1)
             break
-  return
+      if keydown(5):
+        return
 
 def demineur():
   print("demineur")
-  return
+  fill_rect(0,0,x2,y2,couleur[0])
+  fill_rect(60,0,x2-60,y2,couleur[2])
+  grille = [[],[],[],[],[],[],[],[],[],[],[],[]]
+  decouvert = [[],[],[],[],[],[],[],[],[],[],[],[]]
+  ### crée maps
+  for i in range(12):
+    for j in range(10):
+      grille[i].append(0)
+      decouvert[i].append(False)
+      fill_rect(65+i*21,6+j*21,20,20,couleur[1])
+  ### initialiser les mine
+  for z in range(paramètre["nb_mine"]):
+    while True :
+      x,y = randint(0,11),randint(0,9)
+      print(z,'\n',x,"\n",y,"\n",grille[x][y])
+      if grille[x][y] == 0:
+        grille[x][y] = "b"
+        break
+  ### definir le nb de mine autour
+  for i in range(12):
+    for j in range(10):
+      n = 0
+      for x_ in range(3):
+        x__=i+1-x_
+        for y_ in range(3):
+          y__= j+1-y_
+          if 0 <=x__<= 11 and 0<= y__ <= 9 :
+            if grille[x__][y__] == 'b' :
+              n+=1
+      if grille[i][j] != 'b':
+        grille[i][j] = n
+    print(grille[i])
+  
+  def draw_case(x,y,c):
+    if c == "vide":
+      coul = couleur[1]
+    else:
+      coul = couleur[3]
+    fill_rect(65+x*21,6+y*21,20,20,coul)
+    if decouvert[x][y] == False:
+      return
+    else :
+      if grille[x][y] == 0 and  c == "vide" :
+        fill_rect(65+x*21,6+y*21,20,20,couleur[5])
+      if grille[x][y] == 1:
+        draw_string("1",65+x*21+5,6+y*21,couleur[5],coul)
+      if grille[x][y] == 2:
+        draw_string("2",65+x*21+5,6+y*21,couleur[6],coul)
+      if grille[x][y] == 3:
+        draw_string("3",65+x*21+5,6+y*21,couleur[4],coul)
+      if grille[x][y] == 4:
+        draw_string("4",65+x*21+5,6+y*21,couleur[2],coul)
+      if grille[x][y] == "b":
+        fill_rect(65+x*21,6+y*21,20,20,couleur[4])
+      
+  choix_x ,choix_y = 0,0
+  draw_case(choix_x,choix_y,"select")
+  while True:
+    sleep(0.1)
+    if keydown(KEY_UP):
+      draw_case(choix_x,choix_y,"vide")
+      choix_y-=1
+      if choix_y<0: 
+        choix_y=9
+      draw_case(choix_x,choix_y,"select")
+    elif keydown(KEY_DOWN):
+      draw_case(choix_x,choix_y,"vide")
+      choix_y+=1
+      if choix_y>9: 
+        choix_y=0
+      draw_case(choix_x,choix_y,"select")
+    if keydown(KEY_LEFT):
+      draw_case(choix_x,choix_y,"vide")
+      choix_x-=1
+      if choix_x<0: 
+        choix_x=11
+      draw_case(choix_x,choix_y,"select")
+    elif keydown(KEY_RIGHT):
+      draw_case(choix_x,choix_y,"vide")
+      choix_x+=1
+      if choix_x>11: 
+        choix_x=0
+      draw_case(choix_x,choix_y,"select")
+    if keydown(KEY_EXE):
+      decouvert[choix_x][choix_y] = True
+      draw_case(choix_x,choix_y,"select")
+    if keydown(5):
+      return
 
 def pong():
   print("pong")
   return
 
-def setting(adversaire):
+### modifier les setting
+def setting():
+  global paramètre
   fill_rect(x1,y1,x2,y2,couleur[0])
   fill_rect(65,30,190,160,couleur[1])
   draw_string("morpion:",120,35,couleur[2],couleur[1])
+  draw_string("demineur:",115,75,couleur[2],couleur[1])
   morpion_adver = ("bot random"),("bot ia"),("2 joueur")
+  nb_mine = 10
+  draw_string("mine :",70,95,couleur[2],couleur[1])
+  
+  def draw_sett():
+    fill_rect(70,55,185,18,couleur[1])
+    draw_string(morpion_adver[paramètre["adversaire"]%3],70,55,couleur[2],couleur[1])
+    draw_string(str(paramètre["nb_mine"]),130,95,couleur[2],couleur[1])
+    if paramètre["inter"]%2 == 0:
+      draw_string(morpion_adver[paramètre["adversaire"]%3],70,55,couleur[2],couleur[3])
+    elif paramètre["inter"]%2 == 1:
+      draw_string(str(paramètre["nb_mine"]),130,95,couleur[2],couleur[3])
+  
   while True:
-    fill_rect(70,55,185,20,couleur[1])
-    draw_string(morpion_adver[adversaire%3],70,55,couleur[2],couleur[1])
     sleep(0.1)
-    if keydown(KEY_UP):
-      adversaire-=1
+    if keydown(KEY_LEFT):
+      if paramètre["inter"]%2 == 0:  
+        paramètre["adversaire"]-=1
+      elif paramètre["inter"]%2 == 1 and paramètre["nb_mine"]> 10 :  
+        paramètre["nb_mine"]-=1
+    elif keydown(KEY_RIGHT):
+      if paramètre["inter"]%2 == 0: 
+        paramètre["adversaire"]+=1
+      elif paramètre["inter"]%2 == 1 and paramètre["nb_mine"]< 20 :  
+        paramètre["nb_mine"]+=1
+    elif keydown(KEY_UP):
+      paramètre["inter"]-=1
     elif keydown(KEY_DOWN):
-      adversaire+=1
+      paramètre["inter"]+=1
     elif keydown(KEY_EXE):
-      return adversaire
-
+      return 
+    draw_sett()
+        
+### interaction de l'interface main
 def draw_main(choix):
   draw_string("morpion",125,35,couleur[2],couleur[1])
   draw_string("demineur",120,55,couleur[2],couleur[1])
@@ -248,7 +350,7 @@ def main():
         pong()
         return "main"
       elif choix % 6 == 4:
-        paramètre = setting(paramètre)
+        setting()
         return "main"
       elif choix % 6 == 5:
         return "ok"
