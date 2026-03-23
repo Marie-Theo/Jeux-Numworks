@@ -6,7 +6,7 @@ from random import *
 
 couleur = (255,180,40),(255,255,255),(0,0,0),(200,200,200),(255, 0, 0),(0, 255, 0),(0, 0, 255)
 x1,y1,x2,y2 = 0,0,320,225
-paramètre = {"inter":0,"adversaire":0,"nb_mine":10,"drapeau":0,"d_win":0,"sc_1":0,"sc_2":0}
+paramètre = {"inter":0,"adversaire":0,"nb_mine":15,"drapeau":0,"d_win":0,"sc_1":0,"sc_2":0}
 
 def morpion():
   global paramètre
@@ -257,12 +257,14 @@ def demineur():
           fill_rect(65+x*21,6+y*21,20,20,couleur[4])
     
     def d_win(): 
+      drap_bon = 0
       for x in range(12):
         for y in range(10):
-          if grille[x][y] == "mine" and decouvert[x][y] != "drapeau":
-            return False
-      paramètre["d_win"] += 1
-      return True
+          if grille[x][y] == "mine" and decouvert[x][y] == "drapeau":
+            drap_bon += 1
+      if paramètre["nb_mine"] == drap_bon:
+        paramètre["d_win"] += 1
+        return True
       
     choix_x ,choix_y = 0,0
     draw_case(choix_x,choix_y,"select")
@@ -270,7 +272,7 @@ def demineur():
     draw_case(0,0,"draw_drapeau")
     draw_string("{} win".format(paramètre["d_win"]),5,40,couleur[2],couleur[0])
     while True:
-      fill_rect(10,20,20,20,couleur[0])
+      fill_rect(10,20,50,20,couleur[0])
       draw_string("{}/{}".format(paramètre["drapeau"],paramètre["nb_mine"]),10,20,couleur[2],couleur[0])
       sleep(0.1)
       if keydown(KEY_UP):
@@ -375,60 +377,83 @@ def pong():
           e_y += 6
         fill_rect(x2-20,e_y-30,10,60,couleur[0])
 
-def snack():
-  while True: 
-    fill_rect(0,0,x2,y2,couleur[1])
-    s_x,s_y=8,6
-    b_x,b_y= randint(0,15),randint(0,11)
-    fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[0])
-    fill_rect(b_x-5,b_y-5,10,10,couleur[4])
-    dire =  "right"
-    queue = [[],[],[],[],[],[],[],[],[],[],[],[]]
-    for y in range(11):
-      for x in range(15):
-          queue[y][x].append(0)
-    queue[s_y][s_x],queue[b_y][b_x] = 1, "b"
+def snake():
+  def death():
+    for x in range(16):
+      for y in range(11):
+        if grille[y][x]!= "b":
+          if grille[y][x]!= 0 :
+            fill_rect(x*20,y*20,20,20,couleur[4])
+    sleep(2)
 
+  while True: 
+    taille = 1
+    s_x,s_y=5,5
+    fill_rect(0,0,x2,y2,couleur[2])
+    fill_rect(s_x*20,s_y*20,20,20,couleur[5])
+    dire =  "right"
+    grille = []
+    sleep(1)
+    for i in range(11):
+      grille.append([])
+      for j in range(16):
+        grille[j].append(0)
+    grille[s_y][s_x] = 1
+    b_y,b_x = 5,10
+    grille[b_y][b_x] = "b"
+    fill_rect(b_x*20+2,b_y*20+2,16,16,couleur[4])
+    
     while True :
+      draw_string("score:{}".format(taille),x2//2-30,0,couleur[1],couleur[2])
+      sleep(0.2)
       if keydown(17):
-        return
-      if dire=="up" or keydown(KEY_UP):
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[1])
+        return True
+      for i in range(2):
+        if keydown(KEY_UP)  and dire!="down":
+          dire = "up"
+        elif keydown(KEY_DOWN) and dire!="up":
+          dire = "down"
+        elif keydown(KEY_LEFT) and dire!="right":
+          dire = "left"
+        elif keydown(KEY_RIGHT) and dire!="left":
+          dire = "right"
+      if dire=="up" :
         s_y-=1
-        dire =  "up"
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[0])
-      if dire=="down"or keydown(KEY_DOWN):
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[1])
+      elif dire=="down" :
         s_y+=1
-        dire = "down"
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[0])
-      if dire=="left"or keydown(KEY_LEFT):
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[1])
+      elif dire=="left" :
         s_x-=1
-        dire =  "left"
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[0])
-      if dire=="right"or keydown(KEY_RIGHT):
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[1])
+      elif dire=="right" :
         s_x+=1
-        dire =  "right"
-        fill_rect(s_x*20-10,s_y*20-20,20,20,couleur[0])
-      try:
-        if queue[s_y][s_x]!= 0 and queue[s_y][s_x]!= "b":
-          for y in range(11):
-            for x in range(15):
-              if queue[y][x]!= 0 and queue[y][x]!= "b":
-                queue[y][x] += 1
-          queue[s_y][s_x].insert(1)
-      except:
-        break
-      if s_x >= b_x-15 and s_x <= b_x+15 and s_y >= b_y-15 and s_y<= b_y+15:
-        fill_rect(b_x*20-5,b_y*20-5,10,10,couleur[1])
-        queue[b_y][b_x] = 0
-        b_x,b_y= randint(0,15),randint(0,11)
-        queue[b_y][b_x] = "b"
-        fill_rect(b_x-5,b_y-5,10,10,couleur[4])
-        queue[0].insert([queue[0][0]][queue[0][1]-5]) 
-      
+      fill_rect(s_x*20,s_y*20,20,20,couleur[5])
+      print(s_y,s_x)
+      if s_y > 10 or s_y < 0:
+        death()
+        return False
+      elif s_x > 15 or s_x <0 : 
+        death()
+        return False
+      elif grille[s_y][s_x] != 0 and grille[s_y][s_x] != "b":
+        death()
+        return False
+      if s_x == b_x and s_y == b_y :
+        taille += 1
+        while True:
+          b_y,b_x= randint(0,10),randint(0,15)
+          if grille[b_y][b_x] == 0:
+            break
+        fill_rect(b_x*20+2,b_y*20+2,16,16,couleur[4])
+        grille[b_y][b_x] = "b"
+      for x in range(16):
+        for y in range(11):
+          if grille[y][x]!= "b":
+            if grille[y][x]!= 0 :
+              grille[y][x] +=1
+            if grille[y][x] > taille :
+              fill_rect(x*20,y*20,20,20,couleur[2])
+              grille[y][x] = 0
+      grille[s_y][s_x] = 1
+            
 ### modifier les setting
 def setting():
   global paramètre
@@ -437,7 +462,6 @@ def setting():
   draw_string("morpion:",120,35,couleur[2],couleur[1])
   draw_string("demineur:",115,75,couleur[2],couleur[1])
   morpion_adver = ("bot random"),("bot ia"),("2 joueur")
-  nb_mine = 10
   draw_string("mine :",70,95,couleur[2],couleur[1])
   
   def draw_sett():
@@ -447,6 +471,7 @@ def setting():
     if paramètre["inter"]%2 == 0:
       draw_string(morpion_adver[paramètre["adversaire"]%3],70,55,couleur[2],couleur[3])
     elif paramètre["inter"]%2 == 1:
+      fill_rect(130,95,20,18,couleur[1])
       draw_string(str(paramètre["nb_mine"]),130,95,couleur[2],couleur[3])
   
   while True:
@@ -474,7 +499,7 @@ def draw_main(choix):
   draw_string("morpion",125,35,couleur[2],couleur[1])
   draw_string("demineur",120,55,couleur[2],couleur[1])
   draw_string("pong",140,75,couleur[2],couleur[1])
-  draw_string("snack",135,95,couleur[2],couleur[1])
+  draw_string("snake",135,95,couleur[2],couleur[1])
   draw_string("setting",125,115,couleur[2],couleur[1])
   draw_string("credit",130,135,couleur[2],couleur[1])
   draw_string("leave",135,155,couleur[2],couleur[1])
@@ -485,7 +510,7 @@ def draw_main(choix):
   elif choix % 7 == 3:
       draw_string("pong",140,75,couleur[2],couleur[3])
   elif choix % 7 == 4:
-     draw_string("snack",135,95,couleur[2],couleur[3])
+     draw_string("snake",135,95,couleur[2],couleur[3])
   elif choix % 7 == 5:
       draw_string("setting",125,115,couleur[2],couleur[3])
   elif choix % 7 == 6:
@@ -511,21 +536,24 @@ def main():
     if keydown(KEY_EXE):
       if choix % 7 == 1:
         morpion()
-        return "main"
+        return
       elif choix % 7 == 2:
         demineur()
-        return "main"
+        return
       elif choix % 7 == 3:
         pong()
-        return "main"
+        return
       elif choix % 7 == 4:
-        snack()
-        return "main"
+        fin = False
+        while fin != True :
+          fin = snake()
+        return
       elif choix % 7 == 5:
         setting()
-        return "main"
+        return 
       elif choix % 7 == 6:
-        return "ok"
+        credit()
+        return 
       elif choix % 7 == 0:
         return "non"
 
@@ -547,8 +575,5 @@ def credit():
 var_credit=credit()
 
 while var_credit != "non":
-  if var_credit == "ok":
-    var_credit=credit()
-  elif var_credit == "main":
-    var_credit=main()
+  var_credit=main()
 bye+1
