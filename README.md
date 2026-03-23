@@ -1,0 +1,1 @@
+Ce projet à etais réalisé de sorte à ce que les jeux ne fonctionne que si le main est installé sur la calculatrice et ne fonctionne que sur la calculatrice Numworks puisque nécessite la bibliothèque kandinsky.
