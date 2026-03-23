@@ -6,7 +6,7 @@ from random import *
 
 couleur = (255,180,40),(255,255,255),(0,0,0),(200,200,200),(255, 0, 0),(0, 255, 0),(0, 0, 255)
 x1,y1,x2,y2 = 0,0,320,225
-paramètre = {"inter":0,"adversaire":0,"nb_mine":10}
+paramètre = {"inter":0,"adversaire":0,"nb_mine":10,"drapeau":0,"d_win":0}
 
 def morpion():
   global paramètre
@@ -165,99 +165,161 @@ def morpion():
             score["reload"]= False
             sleep(1)
             break
-      if keydown(5):
+      if keydown(17):
         return
 
 def demineur():
   print("demineur")
   fill_rect(0,0,x2,y2,couleur[0])
   fill_rect(60,0,x2-60,y2,couleur[2])
-  grille = [[],[],[],[],[],[],[],[],[],[],[],[]]
-  decouvert = [[],[],[],[],[],[],[],[],[],[],[],[]]
-  ### crée maps
-  for i in range(12):
-    for j in range(10):
-      grille[i].append(0)
-      decouvert[i].append(False)
-      fill_rect(65+i*21,6+j*21,20,20,couleur[1])
-  ### initialiser les mine
-  for z in range(paramètre["nb_mine"]):
-    while True :
-      x,y = randint(0,11),randint(0,9)
-      print(z,'\n',x,"\n",y,"\n",grille[x][y])
-      if grille[x][y] == 0:
-        grille[x][y] = "b"
-        break
-  ### definir le nb de mine autour
-  for i in range(12):
-    for j in range(10):
-      n = 0
-      for x_ in range(3):
-        x__=i+1-x_
-        for y_ in range(3):
-          y__= j+1-y_
-          if 0 <=x__<= 11 and 0<= y__ <= 9 :
-            if grille[x__][y__] == 'b' :
-              n+=1
-      if grille[i][j] != 'b':
-        grille[i][j] = n
-    print(grille[i])
   
-  def draw_case(x,y,c):
-    if c == "vide":
-      coul = couleur[1]
-    else:
-      coul = couleur[3]
-    fill_rect(65+x*21,6+y*21,20,20,coul)
-    if decouvert[x][y] == False:
-      return
-    else :
-      if grille[x][y] == 0 and  c == "vide" :
-        fill_rect(65+x*21,6+y*21,20,20,couleur[5])
-      if grille[x][y] == 1:
-        draw_string("1",65+x*21+5,6+y*21,couleur[5],coul)
-      if grille[x][y] == 2:
-        draw_string("2",65+x*21+5,6+y*21,couleur[6],coul)
-      if grille[x][y] == 3:
-        draw_string("3",65+x*21+5,6+y*21,couleur[4],coul)
-      if grille[x][y] == 4:
-        draw_string("4",65+x*21+5,6+y*21,couleur[2],coul)
-      if grille[x][y] == "b":
-        fill_rect(65+x*21,6+y*21,20,20,couleur[4])
-      
-  choix_x ,choix_y = 0,0
-  draw_case(choix_x,choix_y,"select")
   while True:
-    sleep(0.1)
-    if keydown(KEY_UP):
-      draw_case(choix_x,choix_y,"vide")
-      choix_y-=1
-      if choix_y<0: 
-        choix_y=9
-      draw_case(choix_x,choix_y,"select")
-    elif keydown(KEY_DOWN):
-      draw_case(choix_x,choix_y,"vide")
-      choix_y+=1
-      if choix_y>9: 
-        choix_y=0
-      draw_case(choix_x,choix_y,"select")
-    if keydown(KEY_LEFT):
-      draw_case(choix_x,choix_y,"vide")
-      choix_x-=1
-      if choix_x<0: 
-        choix_x=11
-      draw_case(choix_x,choix_y,"select")
-    elif keydown(KEY_RIGHT):
-      draw_case(choix_x,choix_y,"vide")
-      choix_x+=1
-      if choix_x>11: 
-        choix_x=0
-      draw_case(choix_x,choix_y,"select")
-    if keydown(KEY_EXE):
-      decouvert[choix_x][choix_y] = True
-      draw_case(choix_x,choix_y,"select")
-    if keydown(5):
-      return
+    grille = [[],[],[],[],[],[],[],[],[],[],[],[]]
+    decouvert = [[],[],[],[],[],[],[],[],[],[],[],[]]
+    ### crée maps
+    for i in range(12):
+      for j in range(10):
+        grille[i].append(0)
+        decouvert[i].append(False)
+        fill_rect(65+i*21,6+j*21,20,20,couleur[1])
+    ### initialiser les mine
+    for z in range(paramètre["nb_mine"]):
+      while True :
+        x,y = randint(0,11),randint(0,9)
+        print(z,'\n',x,"\n",y,"\n",grille[x][y])
+        if grille[x][y] == 0:
+          grille[x][y] = "b"
+          break
+    ### definir le nb de mine autour
+    for i in range(12):
+      for j in range(10):
+        n = 0
+        for x_ in range(3):
+          x__=i+1-x_
+          for y_ in range(3):
+            y__= j+1-y_
+            if 0 <=x__<= 11 and 0<= y__ <= 9 :
+              if grille[x__][y__] == 'b' :
+                n+=1
+        if grille[i][j] != 'b':
+          grille[i][j] = n
+      print(grille[i])
+    
+    ### enlever tous les 0 autour
+    def decouvrir():
+      for z in range(2):
+        for i in range(12):
+          for j in range(10):
+            for x_ in range(3):
+              x__=i+1-x_
+              for y_ in range(3):
+                y__= j+1-y_
+                if 0 <=x__<= 11 and 0<= y__ <= 9 :
+                  if grille[x__][y__] == 0 and decouvert[i][j] == True:
+                    decouvert[x__][y__] = True
+                    draw_case(x__,y__,"other")
+    
+    def draw_drapeau(x,y):
+      fill_rect(x,y-4,1,15,couleur[2])
+      for l in range(9):
+        for j in range(l):
+          set_pixel(x-l+9,y-j+4,couleur[4])
+    
+    def draw_case(x,y,c):
+      if c =="draw_drapeau":
+        draw_drapeau(30,10)
+        return
+      if c == "vide":
+        coul = couleur[1]
+      elif c == "other":
+        fill_rect(65+x*21,6+y*21,20,20,couleur[5])
+        return
+      else:
+        coul = couleur[3]
+      fill_rect(65+x*21,6+y*21,20,20,coul)
+      if decouvert[x][y] == False:
+        return
+      elif decouvert[x][y] == "drapeau" :
+        draw_drapeau(70+x*21,11+y*21)
+      else :
+        if grille[x][y] == 0 and  c == "vide" :
+          fill_rect(65+x*21,6+y*21,20,20,couleur[5])
+        elif grille[x][y] == 1:
+          draw_string("1",65+x*21+5,6+y*21,couleur[5],coul)
+        elif grille[x][y] == 2:
+          draw_string("2",65+x*21+5,6+y*21,couleur[6],coul)
+        elif grille[x][y] == 3:
+          draw_string("3",65+x*21+5,6+y*21,couleur[0],coul)
+        elif grille[x][y] == 4:
+          draw_string("4",65+x*21+5,6+y*21,couleur[4],coul)
+        elif grille[x][y] == 5:
+          draw_string("5",65+x*21+5,6+y*21,couleur[2],coul)
+        elif grille[x][y] == "b":
+          fill_rect(65+x*21,6+y*21,20,20,couleur[4])
+    
+    def d_win(): 
+      for x in range(12):
+        for y in range(10):
+          if grille[x][y] == "mine" and decouvert[x][y] != "drapeau":
+            return False
+      paramètre["d_win"] += 1
+      return True
+      
+    choix_x ,choix_y = 0,0
+    draw_case(choix_x,choix_y,"select")
+    paramètre["drapeau"]=0
+    draw_case(0,0,"draw_drapeau")
+    draw_string("{} win".format(paramètre["d_win"]),5,40,couleur[2],couleur[0])
+    while True:
+      fill_rect(10,20,20,20,couleur[0])
+      draw_string("{}/{}".format(paramètre["drapeau"],paramètre["nb_mine"]),10,20,couleur[2],couleur[0])
+      sleep(0.1)
+      if keydown(KEY_UP):
+        draw_case(choix_x,choix_y,"vide")
+        choix_y-=1
+        if choix_y<0: 
+          choix_y=9
+        draw_case(choix_x,choix_y,"select")
+      elif keydown(KEY_DOWN):
+        draw_case(choix_x,choix_y,"vide")
+        choix_y+=1
+        if choix_y>9: 
+          choix_y=0
+        draw_case(choix_x,choix_y,"select")
+      if keydown(KEY_LEFT):
+        draw_case(choix_x,choix_y,"vide")
+        choix_x-=1
+        if choix_x<0: 
+          choix_x=11
+        draw_case(choix_x,choix_y,"select")
+      elif keydown(KEY_RIGHT):
+        draw_case(choix_x,choix_y,"vide")
+        choix_x+=1
+        if choix_x>11: 
+          choix_x=0
+        draw_case(choix_x,choix_y,"select")
+      if keydown(KEY_EXE) and decouvert[choix_x][choix_y] == False:
+        decouvert[choix_x][choix_y] = True
+        draw_case(choix_x,choix_y,"select")
+        if grille[choix_x][choix_y] == "b":
+          sleep(0.1)
+          break
+        elif grille[choix_x][choix_y] == 0:
+          decouvrir()
+      if keydown(4) :
+        if decouvert[choix_x][choix_y] == False and paramètre["nb_mine"] > paramètre["drapeau"]:
+          decouvert[choix_x][choix_y] = "drapeau"
+          paramètre["drapeau"]+=1
+        elif decouvert[choix_x][choix_y] == "drapeau":
+          decouvert[choix_x][choix_y] = False
+          paramètre["drapeau"]-=1
+        draw_case(choix_x,choix_y,"select")
+      if paramètre["nb_mine"] == paramètre["drapeau"]:
+        win = d_win() 
+        if win == True :
+          break
+      if keydown(17):
+        return
 
 def pong():
   print("pong")
@@ -288,12 +350,12 @@ def setting():
     if keydown(KEY_LEFT):
       if paramètre["inter"]%2 == 0:  
         paramètre["adversaire"]-=1
-      elif paramètre["inter"]%2 == 1 and paramètre["nb_mine"]> 10 :  
+      elif paramètre["inter"]%2 == 1 and paramètre["nb_mine"]> 1 :  
         paramètre["nb_mine"]-=1
     elif keydown(KEY_RIGHT):
       if paramètre["inter"]%2 == 0: 
         paramètre["adversaire"]+=1
-      elif paramètre["inter"]%2 == 1 and paramètre["nb_mine"]< 20 :  
+      elif paramètre["inter"]%2 == 1 and paramètre["nb_mine"]< 30 :  
         paramètre["nb_mine"]+=1
     elif keydown(KEY_UP):
       paramètre["inter"]-=1
