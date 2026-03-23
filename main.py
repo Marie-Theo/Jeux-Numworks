@@ -110,7 +110,7 @@ def draw_main(ch):
   for m in range(len(menu)):
     ds(menu[m],160-(len(menu[m])*5),15+20*m,c[2],c[1])
   for m in range(len(menu)):
-    if ch % len(menu)-1 == m:
+    if ch % len(menu) == m:
       ds(menu[m],160-(len(menu[m])*5),15+20*m,c[2],c[3])
     
 ### menu des jeux / setting
