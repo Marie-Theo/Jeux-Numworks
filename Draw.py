@@ -45,7 +45,7 @@ class Texts (Text):
                 text.toString()
 
 class Carrousel ():
-    def __init__(self, menu, c = [255,255,255], bc=[0,0,0]):
+    def __init__(self, menu, c=[0,0,0], bc = [255,255,255]):
         self.Text_Menu = Texts(menu,c,bc)
         self.ch = 0
 
