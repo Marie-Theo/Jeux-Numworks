@@ -15,7 +15,6 @@ bg = ["black on white","white on black"]
 main_c = ["jaune","cyan","rouge","mauve","vert","rose"]
 m_col = [[255,181,49],[6,150,187],[227,35,34],[198,35,126],[147,255,150],[224,141,172]]
 click = {"nb_click":0,"cl_s":0,"cl_cl":1,"reborn":0,"t":0}
-# menu=["morpion","demineur","pong","snake","arkanoid","cookie clicker","space invader","setting","leave"]
 
 ### modifier les setting
 def setting():
@@ -105,31 +104,12 @@ def setting():
       draw_sett()
     elif ke(4):
       return 
-
-### interaction de l'interface main
-# def draw_main(ch):
-#   for m in range(len(menu)):
-#     ds(menu[m],160-(len(menu[m])*5),15+20*m,c[2],c[1])
-#   for m in range(len(menu)):
-#     if ch % len(menu) == m:
-#       ds(menu[m],160-(len(menu[m])*5),15+20*m,c[2],c[3])
     
 ### menu des jeux / setting
 def main():
   global para
   rect(x1,y1,x2,y2,c[0])
   rect(65,10,190,200,c[1])
-  # ch = 1
-  # draw_main(ch)
-  # while True :
-  #   sleep(0.1)
-  #   if ke(1):
-  #     ch-=1
-  #     draw_main(ch)
-  #   elif ke(2):
-  #     ch+=1
-  #     draw_main(ch)
-  #   elif ke(4):
   menu = Carrousel(["morpion","demineur","pong","snake","arkanoid","cookie clicker","space invader","setting","leave"])
   ch = menu.Choisir()
   if ch % 9 == 1:
