@@ -60,4 +60,4 @@ class Carrousel ():
                 self.ch+=1
                 self.Text_Menu.AfficherChoix(self.ch)
             elif ke(4):
-                return self.ch+1
+                return self.ch

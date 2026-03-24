@@ -112,37 +112,37 @@ def main():
   rect(65,10,190,200,c[1])
   menu = Carrousel(["morpion","demineur","pong","snake","arkanoid","cookie clicker","space invader","setting","leave"])
   ch = menu.Choisir()
-  if ch % 9 == 1:
+  if ch % 9 == 0:
     from morpion import *
     morpion(c,para,m_adver,sc)
     return
-  elif ch % 9 == 2:
+  elif ch % 9 == 1:
     from demineur import *
     demineur(c,para)
     return
-  elif ch % 9 == 3:
+  elif ch % 9 == 2:
     from pong import *
     pong(c,para,dif)
     return
-  elif ch % 9 == 4:
+  elif ch % 9 == 3:
     fin = False
     while fin != True :
       from snake import *
       fin = snake(c,para)
     return
-  elif ch % 9 == 5:
+  elif ch % 9 == 4:
     from arkanoid import *
     arkanoid(c,para)
     return
-  elif ch % 9 == 6:
+  elif ch % 9 == 5:
     from cookie_clicker import *
     cookie_clicker(c,click)
     return
-  elif ch % 9 == 7:
+  elif ch % 9 == 6:
     from space_invader import *
     Spaces_invaders()
     return
-  elif ch % 9 == 8:
+  elif ch % 9 == 7:
     setting()
     if para["c_txt"] == 0:
       c[1]=[255,255,255]
@@ -152,7 +152,7 @@ def main():
       c[2]=[255,255,255]
     c[0]= m_col[para["main"]]
     return 
-  elif ch % 9 == 0:
+  elif ch % 9 == 8:
     return "non"
 
 var_credit=main()
