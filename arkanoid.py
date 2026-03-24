@@ -3,6 +3,7 @@ from ion import keydown as ke
 from math import *
 from time import *
 from random import *
+from draw import *
 
 x1,y1,x2,y2 = 0,0,320,225
  
