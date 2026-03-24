@@ -33,7 +33,7 @@ class Texts (Text):
         self.menu = menu
         self.textes = [Text(n, 160-(len(menu[n])*5), n*20+(220//2-len(menu)*10), menu[n],c,bc) for n in range(len(menu))]
 
-    def AfficherChoix(self, ch, r=False):
+    def Draw(self, ch, r=False):
         for text in self.textes:
             if ch % len(self.menu) == text.key:
                 text.bc = [200,200,200]
@@ -50,14 +50,26 @@ class Carrousel ():
         self.ch = 0
 
     def Choisir(self):
-        self.Text_Menu.AfficherChoix(self.ch,True)
+        self.Text_Menu.Draw(self.ch,True)
         while True :
             sleep(0.1)
             if ke(1):
                 self.ch-=1
-                self.Text_Menu.AfficherChoix(self.ch)
+                self.Text_Menu.Draw(self.ch)
             elif ke(2):
                 self.ch+=1
-                self.Text_Menu.AfficherChoix(self.ch)
+                self.Text_Menu.Draw(self.ch)
             elif ke(4):
                 return self.ch
+
+class Option(Text):
+    def __init__(self, mode, x, y, titre, choix, select=0, c=[0,0,0], bc = [255,255,255]):
+        self.mode = Text(0, 160-(len(mode)*5), y, mode, c, bc)
+        self.titre = Text(1, x, y+10, titre, c, bc)
+        self.choix = choix
+        self.select = select
+
+class Options():
+    def __init__(self,List):
+        self.inter = 0
+        self.lists = [Option(List[n][0], 70, List[n][1], List[n][2], List[n][3], List[n][4]) for n in range(len(List))]
