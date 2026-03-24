@@ -27,7 +27,6 @@ class Text (Draw):
     
     def toString(self):
         ds(self.text,self.x,self.y,self.c,self.bc)
-        # print(self.key,'|', self.text,' ',self.x,' ',self.y,' ',self.c,' ',self.bc)
 
 class Texts (Text):
     def __init__(self, menu):
