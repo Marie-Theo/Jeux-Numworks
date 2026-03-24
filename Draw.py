@@ -19,37 +19,36 @@ class Rectangle (Draw):
         print(self.x, self.y, self.longueur, self.largeur, self.c)
 
 class Text (Draw):
-    def __init__(self, k, x, y, text, c = [0,0,0], bc = [255,255,255]):
+    def __init__(self, k, x, y, text, c, bc):
         super().__init__(x, y, c)
         self.key = k
         self.text = text
         self.bc = bc
-    
+        self.tbc = bc
     def toString(self):
         ds(self.text,self.x,self.y,self.c,self.bc)
 
 class Texts (Text):
-    def __init__(self, menu):
+    def __init__(self, menu,c,bc):
         self.menu = menu
-        self.Texts = [Text(n, 160-(len(menu[n])*5), n*20+(220//2-len(menu)*10), menu[n]) for n in range(len(menu))]
-    
+        self.textes = [Text(n, 160-(len(menu[n])*5), n*20+(220//2-len(menu)*10), menu[n],c,bc) for n in range(len(menu))]
+
     def AfficherChoix(self, ch, r=False):
-        for text in self.Texts:
+        for text in self.textes:
             if ch % len(self.menu) == text.key:
                 text.bc = [200,200,200]
                 text.toString()
             elif (ch-1) % len(self.menu) == text.key or (ch+1) % len(self.menu) == text.key:
-                text.bc = [255,255,255]
+                text.bc = text.tbc
                 text.toString()
             elif r:
                 text.toString()
 
-
 class Carrousel ():
-    def __init__(self, menu):
-        self.Text_Menu = Texts(menu)
+    def __init__(self, menu, c = [255,255,255], bc=[0,0,0]):
+        self.Text_Menu = Texts(menu,c,bc)
         self.ch = 0
-    
+
     def Choisir(self):
         self.Text_Menu.AfficherChoix(self.ch,True)
         while True :

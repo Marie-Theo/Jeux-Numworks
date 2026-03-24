@@ -15,14 +15,14 @@ def arkanoid(c,para):
         cible[i].append(4-i)
         rect(12+30*j,10+20*i,25,15,c[4+i])
     
-  def d_m(ch):
-    ds("{} p".format(para["ark_p"]),x2//2-30,y2//2,c[1],c[2])
-    ds("recommencé",x2//2-50,y2//2+20,c[1],c[2])
-    ds("leave",x2//2-25,y2//2+40,c[1],c[2])
-    if ch%2 == 0:
-      ds("recommencé",x2//2-50,y2//2+20,c[1],c[3])
-    if ch%2 == 1:
-      ds("leave",x2//2-25,y2//2+40,c[1],c[3])
+  # def d_m(ch):
+  #   ds("{} p".format(para["ark_p"]),x2//2-30,y2//2,c[1],c[2])
+  #   ds("recommencé",x2//2-50,y2//2+20,c[1],c[2])
+  #   ds("leave",x2//2-25,y2//2+40,c[1],c[2])
+  #   if ch%2 == 0:
+  #     ds("recommencé",x2//2-50,y2//2+20,c[1],c[3])
+  #   if ch%2 == 1:
+  #     ds("leave",x2//2-25,y2//2+40,c[1],c[3])
 
   def vie():
     rect(5,y2-8,x2-10,5,c[2])
@@ -120,26 +120,33 @@ def arkanoid(c,para):
           para["ark"]=3
           ch = 0
           rect(x2//2-55,y2//2-5,110,50,c[2])
-          d_m(ch)
-          while True:
-            if ke(17):
-              return
-            if ke(1) :
-              ch +=1
-              d_m(ch)
-              sleep(0.1)
-            elif ke(2) :
-              ch+=1
-              d_m(ch)
-              sleep(0.1)
-            elif ke(4):
-              if ch % 2 ==0:
-                para["ark_p"]=0
-                break
-              if ch % 2 ==1:
-                return
-            elif ke(17):
-              return
-          break
+          menu = Carrousel(["recommencé","leave"])
+          ch = menu.Choisir()
+          if ch % 2 ==0:
+            para["ark_p"]=0
+            break
+          if ch % 2 ==1:
+            return
+          # d_m(ch)
+          # while True:
+          #   if ke(17):
+          #     return
+          #   if ke(1) :
+          #     ch +=1
+          #     d_m(ch)
+          #     sleep(0.1)
+          #   elif ke(2) :
+          #     ch+=1
+          #     d_m(ch)
+          #     sleep(0.1)
+          #   elif ke(4):
+          #     if ch % 2 ==0:
+          #       para["ark_p"]=0
+          #       break
+          #     if ch % 2 ==1:
+          #       return
+          #   elif ke(17):
+          #     return
+          # break
       if ke(17):
         return
