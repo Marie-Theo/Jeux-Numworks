@@ -51,6 +51,7 @@ class Carrousel ():
 
     def Choisir(self):
         self.Text_Menu.Draw(self.ch,True)
+        while ke(4):sleep(0.1)
         while True :
             sleep(0.1)
             if ke(1):
@@ -65,11 +66,51 @@ class Carrousel ():
 class Option(Text):
     def __init__(self, mode, x, y, titre, choix, select=0, c=[0,0,0], bc = [255,255,255]):
         self.mode = Text(0, 160-(len(mode)*5), y, mode, c, bc)
-        self.titre = Text(1, x, y+10, titre, c, bc)
-        self.choix = choix
+        self.titre = Text(1, x, y+15, titre, c, bc)
+        self.choix = [Text(2,len(titre)*10+x,y+15,ch,c,bc) for ch in choix]
         self.select = select
+    
+    def draw(self):
+        self.mode.toString()
+        self.titre.toString()
+    
+    def drawChoix(self, bc = [255,255,255]):
+        self.choix[self.select].bc = bc
+        self.choix[self.select].toString()
 
 class Options():
     def __init__(self,List):
         self.inter = 0
-        self.lists = [Option(List[n][0], 70, List[n][1], List[n][2], List[n][3]) for n in range(len(List))]
+        self.lists = [Option(List[n][0], 70, 25+40*n, List[n][1], List[n][2]) for n in range(len(List))]
+    def setChoix(self,z):
+        self.lists[self.inter].select=(self.lists[self.inter].select+z) % len(self.lists[self.inter].choix)
+    def setInter(self,z):
+        self.inter= (self.inter+z) % len(self.lists)
+    def refresh(self):
+        for n in range(len(self.lists)):
+            self.lists[n].draw()
+            bc = [255,255,255]
+            if self.inter % len(self.lists)== n:
+                bc = [200,200,200]
+            self.lists[n].drawChoix(bc)
+    def write(self, c):
+        rect(0,0,320,225,c[0])
+        rect(65,20,190,180,c[1])
+        self.refresh()
+        while ke(4):sleep(0.1)
+        while True:
+            while ke(0) or ke(1) or ke(2) or ke(3):sleep(0.1)
+            sleep(0.1)
+            if ke(4) or ke(17):
+                return
+            if ke(1):
+                self.setInter(-1)
+            elif ke(2):
+                self.setInter(1)
+            elif ke(0):
+                self.setChoix(-1)
+            elif ke(3):
+                self.setChoix(1)
+            else:
+                continue
+            self.refresh()
