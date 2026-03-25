@@ -66,8 +66,8 @@ class Carrousel ():
 class Option(Text):
     def __init__(self, mode, x, y, titre, choix, select=0, c=[0,0,0], bc = [255,255,255]):
         self.mode = Text(0, 160-(len(mode)*5), y, mode, c, bc)
-        self.titre = Text(1, x, y+15, titre, c, bc)
-        self.choix = [Text(2,len(titre)*10+x,y+15,ch,c,bc) for ch in choix]
+        self.titre = Text(1, x, y+20, titre, c, bc)
+        self.choix = [Text(2,len(titre)*10+x,y+20,ch,c,bc) for ch in choix]
         self.select = select
     
     def draw(self):

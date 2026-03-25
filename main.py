@@ -9,16 +9,14 @@ x1,y1,x2,y2 = 0,0,320,225
 c = [[255,181,49],[255,255,255],[0,0,0],[200,200,200],[255, 0, 0],[0, 255, 0],[0, 0, 255],[255,255,0],[255,0,255]]
 para = {"inter":0,"adv":0,"nb_mine":15,"drap":0,"d_win":0,"sc_1":0,"sc_2":0,"v_s":1,"v_p":3,"main":0,"c_txt":0,"ark":3,"ark_p":0}
 sc= {"x":0,"o":0,"reload":False}
-m_adver = ("bot random"),("bot ia"),("2 j")
-dif = ("easy","normal","hard")
-bg = ["black on white","white on black"]
-main_c = ["jaune","cyan","rouge","mauve","vert","rose"]
 m_col = [[255,181,49],[6,150,187],[227,35,34],[198,35,126],[147,255,150],[224,141,172]]
 click = {"nb_click":0,"cl_s":0,"cl_cl":1,"reborn":0,"t":0}
 
+setting = Options([["morpion:","adver:",["bot random","bot ia","2 j"]],["demineur:","mine:",[str(n) for n in range(5,36)]],["snake:","vitesse * ",["1","2","3"]],["pong:","dificulter ",["easy","normal","hard"]],["main:","colors:",["jaune","cyan","rouge","mauve","vert","rose"]],["couleur:","",["black on white","white on black"]]])
+
 ### modifier les setting
-def setting():
-  global para,m_adver,dif
+def main():
+  global para, setting
 
   # def d_sett_1():
   #   rect(x1,y1,x2,y2,c[0])
@@ -143,12 +141,6 @@ def main():
     Spaces_invaders()
     return
   elif ch % 9 == 7:
-    setting = Options([["morpion:","titre:",["1","2","3"]],
-                       ["demineur:","titre:",["1","2","3"]],
-                       ["snake:","titre:",["1","2","3"]],
-                       ["pong:","titre:",["1","2","3"]],
-                       ["main colors:","titre:",["1","2","3"]],
-                       ["black/wite:","titre:",["1","2","3"]]])
     setting.write(c)
     # setting()
     # if para["c_txt"] == 0:
