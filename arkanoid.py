@@ -93,9 +93,9 @@ def arkanoid(c,para):
         b_y_s-= b_y_s*2
       elif y2-5 < b_y :
         rect(b_x-5,b_y-5,10,10,c[4])
+        sleep(0.2)
         if para["ark"] != 0:
           para["ark"]-=1
-          sleep(0.2)
           rect(b_x-5,b_y-5,10,10,c[2])
           vie()
           rect(bar_x-25,bar_y,50,10,c[2])
@@ -107,7 +107,7 @@ def arkanoid(c,para):
           else:
             b_x_s= randint(-5,-3)
         else:
-          sleep(0.5)
+          sleep(0.3)
           para["ark"]=3
           ch = 0
           rect(x2//2-60,y2//2-25,120,47,c[0])

@@ -64,7 +64,8 @@ class Carrousel ():
                 return self.ch
 
 class Option(Text):
-    def __init__(self, mode, x, y, titre, choix, select=0, c=[0,0,0], bc = [255,255,255]):
+    def __init__(self, scroll, mode, x, y, titre, choix, select=0, c=[0,0,0], bc = [255,255,255]):
+        self.scroll=scroll//4
         self.mode = Text(0, 160-(len(mode)*5), y, mode, c, bc)
         self.titre = Text(1, x, y+20, titre, c, bc)
         self.choix = [Text(2,len(titre)*10+x,y+20,ch,c,bc) for ch in choix]
@@ -79,20 +80,30 @@ class Option(Text):
         self.choix[self.select].toString()
 
 class Options():
-    def __init__(self,List):
+    def __init__(self,List,x1,y1,x2,y2,bg_C):
         self.inter = 0
-        self.lists = [Option(List[n][0], 70, 25+40*n, List[n][1], List[n][2]) for n in range(len(List))]
+        self.bg_C = bg_C
+        self.x1=x1
+        self.y1=y1
+        self.x2=x2
+        self.y2=y2
+        self.lists = [Option(n, List[n][0], 70, 25+40*(n%4), List[n][1], List[n][2]) for n in range(len(List))]
     def setChoix(self,z):
         self.lists[self.inter].select=(self.lists[self.inter].select+z) % len(self.lists[self.inter].choix)
     def setInter(self,z):
         self.inter= (self.inter+z) % len(self.lists)
     def refresh(self):
+        self.drawBackGround()
         for n in range(len(self.lists)):
-            self.lists[n].draw()
-            bc = [255,255,255]
-            if self.inter % len(self.lists)== n:
-                bc = [200,200,200]
-            self.lists[n].drawChoix(bc)
+            if self.lists[n].scroll == self.inter//4:
+                self.lists[n].draw()
+                bc = [255,255,255]
+                if self.inter % len(self.lists)== n:
+                    bc = [200,200,200]
+                self.lists[n].drawChoix(bc)
+    def drawBackGround(self):
+        if (self.inter%4 in [0,3]) or self.inter == len(self.lists)-1:
+            rect(self.x1,self.y1,self.x2,self.y2,self.bg_C)
     def write(self, c):
         rect(0,0,320,225,c[0])
         rect(65,20,190,180,c[1])
