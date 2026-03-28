@@ -12,7 +12,7 @@ sc= {"x":0,"o":0,"reload":False}
 m_col = [[255,181,49],[6,150,187],[227,35,34],[198,35,126],[147,255,150],[224,141,172]]
 click = {"nb_click":0,"cl_s":0,"cl_cl":1,"reborn":0,"t":0}
 
-setting = Options([["morpion:","adver:",["bot random","bot ia","2 j"]],["demineur:","mine:",[str(n) for n in range(5,36)]],["snake:","vitesse * ",["1","2","3"]],["pong:","dificulter ",["easy","normal","hard"]],["main:","colors:",["jaune","cyan","rouge","mauve","vert","rose"]],["couleur:","",["black on white","white on black"]]],65,15,190,190,bg_C=c[1])
+setting = Options([["Morpion","adver:",["bot random","bot ia","2 j"]],["Demineur","mine:",[str(n) for n in range(5,36)]],["Snake","vitesse * ",["1","2","3"]],["Pong","dificulter ",["easy","normal","hard"]],["Main","colors:",["jaune","cyan","rouge","mauve","vert","rose"]],["Couleur","",["black on white","white on black"]]],65,20,190,180,bg_C=c[1])
 
 ### modifier les setting
 def main():
@@ -141,7 +141,7 @@ def main():
     Spaces_invaders()
     return
   elif ch % 9 == 7:
-    setting.write(c)
+    setting.launch(c)
     # setting()
     # if para["c_txt"] == 0:
     #   c[1]=[255,255,255]
