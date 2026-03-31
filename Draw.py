@@ -26,7 +26,7 @@ class Text (Draw):
         ds(self.text,self.x,self.y,self.c,self.bc)
     def clear(self):
         this=self.choix[self.select]
-        rect(this.x+10,this.y,155-len(self.titre.text)*10,18,[255,255,255])
+        rect(this.x+10,this.y,155-len(self.titre.text)*10,18,this.bc)
 
 class Texts (Text):
     def __init__(self,menu,c,bc):
@@ -49,7 +49,9 @@ class Carrousel ():
         self.Text_Menu=Texts(menu,c,bc)
         self.ch=0
 
-    def Choisir(self):
+    def Choisir(self, c):
+        for text in self.Text_Menu.textes:
+            text.c,text.bc,text.tbc=c[2],c[1],c[1]
         self.Text_Menu.Draw(self.ch,True)
         while ke(4):sleep(0.1)
         while True :
@@ -64,25 +66,25 @@ class Carrousel ():
                 return self.ch
 
 class Option(Text):
-    def __init__(self,scroll,mode,x,y,titre,choix,select=0,c=[0,0,0],bc=[255,255,255]):
+    def __init__(self,scroll,mode,x,y,titre,choix,var,select=0,c=[0,0,0],bc=[255,255,255]):
         self.scroll=scroll//4
         self.mode=Text(0,160-(len(mode)*5),y,mode,c,bc)
         self.titre=Text(1,x,y+20,titre,c,bc)
         self.choix=[Text(2,len(titre)*10+x,y+20,ch,c,bc)for ch in choix]
+        self.var=var
         self.select=select
     def draw(self):
         self.mode.write()
         self.titre.write()
-    def drawChoix(self,bc=[255,255,255]):
+    def drawChoix(self,bc):
         self.choix[self.select].bc=bc
         self.choix[self.select].write()
 
 class Options():
-    def __init__(self,List,x1,y1,x2,y2,c,bg_C):
+    def __init__(self,List,x1,y1,x2,y2):
         self.inter,self.tmp=0,0
-        self.bg_C,self.c=bg_C,c
         self.x1,self.x2,self.y1,self.y2=x1,x2,y1,y2
-        self.lists=[Option(n,List[n][0],70,26+40*(n%4),List[n][1],List[n][2])for n in range(len(List))]
+        self.lists=[Option(n,List[n][0],70,26+40*(n%4),List[n][1],List[n][2],List[n][3])for n in range(len(List))]
     def setChoix(self,z):
         self.tmp=self.inter
         self.lists[self.inter].select=(self.lists[self.inter].select+z)%len(self.lists[self.inter].choix)
@@ -96,7 +98,7 @@ class Options():
         for n in range(len(self.lists)):
             if self.lists[n].scroll==i//4:
                 self.lists[n].draw()
-                bc=[255,255,255]
+                bc=self.c[1]
                 if i%len(self.lists)==n:
                     bc=[200,200,200]
                     self.lists[n].clear()
@@ -106,7 +108,13 @@ class Options():
         x,y1,y2,lenList=self.x1+self.x2-20,self.y1,self.y2,self.y2//(len(self.lists)//4+1)
         rect(x,y1,20,y2,self.c[3])
         rect(x+2,y1+lenList*((self.inter//4)%4)+2,16,lenList-4,[100,100,100])
-    def launch(self):
+    def launch(self,c):
+        self.c,self.bg_C=c,c[1]
+        if self.lists[0].mode.c!=c[2]:
+            for opt in self.lists:
+                mode,titre=opt.mode,opt.titre
+                mode.c,titre.c,mode.bc,titre.bc,mode.tbc,titre.tbc= c[2],c[2],c[1],c[1],c[1],c[1]
+                for ch in opt.choix:ch.c,ch.bc,ch.tbc=c[2],c[1],c[1]
         rect(0,0,320,225,self.c[0])
         self.drawBG()
         self.refresh()
@@ -127,3 +135,8 @@ class Options():
             else:
                 continue
             self.refresh()
+    def find(self,var=None):
+        if var==None:return None
+        if type(var)==int:return self.lists[var].select
+        for opt in self.lists:
+            if opt.var==var:return opt.select
