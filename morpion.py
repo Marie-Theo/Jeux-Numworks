@@ -6,7 +6,7 @@ from random import *
 
 x1,y1,x2,y2 = 0,0,320,225
 
-def morpion(c,para,m_adver,sc):
+def morpion(c,para,sc):
   rect(x1,y1,95,y2,c[0])
   rect(95,y1,225,y2,c[1])
 

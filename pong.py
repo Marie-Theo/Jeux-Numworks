@@ -6,7 +6,7 @@ from random import *
 
 x1,y1,x2,y2 = 0,0,320,225
 
-def pong(c,para,dif):
+def pong(c,para):
   rect(0,0,x2,y2,c[1])
   while True:
     e_y=y =b_y= y2//2

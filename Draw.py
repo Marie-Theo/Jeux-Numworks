@@ -26,7 +26,7 @@ class Text (Draw):
         ds(self.text,self.x,self.y,self.c,self.bc)
     def clear(self):
         this=self.choix[self.select]
-        rect(this.x,this.y,185-len(self.titre.text)*10,18,[255,255,255])
+        rect(this.x+10,this.y,155-len(self.titre.text)*10,18,[255,255,255])
 
 class Texts (Text):
     def __init__(self,menu,c,bc):
@@ -78,9 +78,9 @@ class Option(Text):
         self.choix[self.select].write()
 
 class Options():
-    def __init__(self,List,x1,y1,x2,y2,bg_C):
+    def __init__(self,List,x1,y1,x2,y2,c,bg_C):
         self.inter,self.tmp=0,0
-        self.bg_C=bg_C
+        self.bg_C,self.c=bg_C,c
         self.x1,self.x2,self.y1,self.y2=x1,x2,y1,y2
         self.lists=[Option(n,List[n][0],70,26+40*(n%4),List[n][1],List[n][2])for n in range(len(List))]
     def setChoix(self,z):
@@ -90,26 +90,29 @@ class Options():
         self.tmp=self.inter
         self.inter=(self.inter+z)%len(self.lists)
     def refresh(self):
-        if (self.inter%4==0)and((self.tmp)%4==3)or(self.inter%4==0)and((self.tmp)%4==3)or((self.inter==len(self.lists)-1)and self.tmp==0)or((self.tmp==len(self.lists)-1)and self.inter==0):
+        i,t=self.inter,self.tmp
+        if (i%4==0)and((t)%4==3)or(i%4==3)and((t)%4==0)or((i==len(self.lists)-1)and t==0)or((t==len(self.lists)-1)and i==0):
             self.drawBG()
         for n in range(len(self.lists)):
-            if self.lists[n].scroll==self.inter//4:
+            if self.lists[n].scroll==i//4:
                 self.lists[n].draw()
                 bc=[255,255,255]
-                if self.inter%len(self.lists)==n:
+                if i%len(self.lists)==n:
                     bc=[200,200,200]
-                    if self.tmp==self.inter:
-                        self.lists[n].clear()
+                    self.lists[n].clear()
                 self.lists[n].drawChoix(bc)
     def drawBG(self):
         rect(self.x1,self.y1,self.x2,self.y2,self.bg_C)
-    def launch(self,c):
-        rect(0,0,320,225,c[0])
+        x,y1,y2,lenList=self.x1+self.x2-20,self.y1,self.y2,self.y2//(len(self.lists)//4+1)
+        rect(x,y1,20,y2,self.c[3])
+        rect(x+2,y1+lenList*((self.inter//4)%4)+2,16,lenList-4,[100,100,100])
+    def launch(self):
+        rect(0,0,320,225,self.c[0])
         self.drawBG()
         self.refresh()
         while ke(4):sleep(0.1)
         while True:
-            while ke(0)or ke(1)or ke(2)or ke(3):sleep(0.1)
+            if ke(0)or ke(1)or ke(2)or ke(3):sleep(0.2)
             sleep(0.1)
             if ke(4)or ke(17):
                 return
