@@ -12,8 +12,8 @@ sc= {"x":0,"o":0,"reload":False}
 m_col = [[255,181,49],[6,150,187],[227,35,34],[198,35,126],[147,255,150],[224,141,172]]
 click = {"nb_click":0,"cl_s":0,"cl_cl":1,"reborn":0,"t":0}
 
-setting = Options([["Morpion","adver:",["bot random","bot ia","2 j"],"adv"],["Demineur","mine:",[str(n) for n in range(5,36)],"nb_mine"],["Snake","vitesse * ",["1","2","3"],"v_s"],["Pong","niveaux ",["easy","normal","hard"],"v_p"],["Main","colors:",["jaune","cyan","rouge","mauve","vert","rose"],"main"],["Couleur","",["white on black","black on white"],"c_txt"]],65,20,190,180)
-    
+setting = Options([["Morpion","adver:",["bot random","bot ia","2 j"],"adv"],["Demineur","mine:",[str(n) for n in range(5,36)],"nb_mine",15],["Snake","vitesse * ",["1","2","3"],"v_s"],["Pong","niveaux ",["easy","normal","hard"],"v_p",1],["Main","colors:",["jaune","cyan","rouge","mauve","vert","rose"],"main"],["Couleur","",["white on black","black on white"],"c_txt"]],65,20,190,180)
+
 ### menu des jeux
 def main():
   global para, setting

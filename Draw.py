@@ -66,7 +66,7 @@ class Carrousel ():
                 return self.ch
 
 class Option(Text):
-    def __init__(self,scroll,mode,x,y,titre,choix,var,select=0,c=[0,0,0],bc=[255,255,255]):
+    def __init__(self,scroll,mode,x,y,titre,choix,var,select,c=[0,0,0],bc=[255,255,255]):
         self.scroll=scroll//4
         self.mode=Text(0,160-(len(mode)*5),y,mode,c,bc)
         self.titre=Text(1,x,y+20,titre,c,bc)
@@ -84,7 +84,7 @@ class Options():
     def __init__(self,List,x1,y1,x2,y2):
         self.inter,self.tmp=0,0
         self.x1,self.x2,self.y1,self.y2=x1,x2,y1,y2
-        self.lists=[Option(n,List[n][0],70,26+40*(n%4),List[n][1],List[n][2],List[n][3])for n in range(len(List))]
+        self.lists=[Option(n,List[n][0],70,26+40*(n%4),List[n][1],List[n][2],List[n][3],List[n][4]if len(List[n])>4 else 0)for n in range(len(List))]
     def setChoix(self,z):
         self.tmp=self.inter
         self.lists[self.inter].select=(self.lists[self.inter].select+z)%len(self.lists[self.inter].choix)
