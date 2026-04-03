@@ -6,7 +6,7 @@ from random import *
 
 x1,y1,x2,y2 = 0,0,320,225
 
-def morpion(c,para,sc):
+def morpion(c,setting,sc):
   rect(x1,y1,95,y2,c[0])
   rect(95,y1,225,y2,c[1])
 
@@ -108,7 +108,7 @@ def morpion(c,para,sc):
           sleep(1)
           break
         else:
-          if para["adv"]%3 == 0:
+          if setting.find("adv")%3 == 0:
             while True:
               ch_y,ch_x = randint(0,2),randint(0,2)
               if pla[ch_x][ch_y]=="-":
@@ -116,7 +116,7 @@ def morpion(c,para,sc):
                 pla[ch_x][ch_y]="o"
                 draw_o(ch_y*72+135,ch_x*72+40,21)
                 break
-          elif para["adv"]%3 == 1:
+          elif setting.find("adv")%3 == 1:
             while True:
               ch_x,ch_y,play = 4,4,"x"
               for p in range(2):
@@ -146,7 +146,7 @@ def morpion(c,para,sc):
               pla[ch_x][ch_y]="o"
               draw_o(ch_y*72+135,ch_x*72+40,21)
               break
-          elif para["adv"]%3 == 2:
+          elif setting.find("adv")%3 == 2:
             if j == "x":
               j = "o"
             else:

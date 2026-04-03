@@ -6,7 +6,7 @@ from random import *
 
 x1,y1,x2,y2 = 0,0,320,225
 
-def pong(c,para):
+def pong(c,para,setting):
   rect(0,0,x2,y2,c[1])
   while True:
     e_y=y =b_y= y2//2
@@ -49,7 +49,7 @@ def pong(c,para):
       elif b_x <= 5:
         para["sc_2"]+=1
         break
-      if b_x > x2-x2//para["v_p"]:
+      if b_x > x2-x2//int(setting.find("v_p")+1):
         rect(x2-20,e_y-30,10,60,c[1])
         if b_x_speed > 0: 
           if b_y < e_y-20 and  e_y >30:

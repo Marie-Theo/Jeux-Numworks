@@ -26,7 +26,7 @@ class Text (Draw):
         ds(self.text,self.x,self.y,self.c,self.bc)
     def clear(self):
         this=self.choix[self.select]
-        rect(this.x+10,this.y,155-len(self.titre.text)*10,18,this.bc)
+        rect(this.x+10,this.y,155-len(self.titre.text)*10,18,this.tbc)
 
 class Texts (Text):
     def __init__(self,menu,c,bc):
@@ -98,11 +98,9 @@ class Options():
         for n in range(len(self.lists)):
             if self.lists[n].scroll==i//4:
                 self.lists[n].draw()
-                bc=self.c[1]
                 if i%len(self.lists)==n:
-                    bc=[200,200,200]
                     self.lists[n].clear()
-                self.lists[n].drawChoix(bc)
+                self.lists[n].drawChoix(self.c[3] if i%len(self.lists)==n else self.c[1])
     def drawBG(self):
         rect(self.x1,self.y1,self.x2,self.y2,self.bg_C)
         x,y1,y2,lenList=self.x1+self.x2-20,self.y1,self.y2,self.y2//(len(self.lists)//4+1)
@@ -140,3 +138,8 @@ class Options():
         if type(var)==int:return self.lists[var].select
         for opt in self.lists:
             if opt.var==var:return opt.select
+    def varSelected(self,var=None):
+        if var==None:return None
+        if type(var)==int:return self.lists[var].choix[self.lists[var].select].text
+        for opt in self.lists:
+            if opt.var==var:return opt.choix[opt.select].text
