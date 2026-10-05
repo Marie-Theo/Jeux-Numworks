@@ -1,12 +1,12 @@
 from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
-from math import *
-from time import *
-from random import *
-
+from math import sqrt
+from time import sleep
+from random import randint
+def load():return ["Morpion","adver:",["bot random","bot ia","2 j"],"adv"]
 x1,y1,x2,y2 = 0,0,320,225
 
-def morpion(c,setting,sc):
+def launch(c,setting,sc,para=None,click=None):
   rect(x1,y1,95,y2,c[0])
   rect(95,y1,225,y2,c[1])
 
