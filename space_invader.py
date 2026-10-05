@@ -1,11 +1,10 @@
 from kandinsky import fill_rect as rect , get_pixel as gp, draw_string as ds
 from ion import keydown as ke
-from math import *
-from time import *
-from random import *
-
-def Spaces_invaders():
-  global x_ene, x_ene, px1, px2,px3 , x_b, y_b, sc, n_e
+from time import sleep
+from random import randint
+def load():return ["Space invader","nombre de vie:",["1","2","3","4","5"],"vie_inv",2]
+def launch(setting,c=None,click=None,para=None,sc=None):
+  global x_ene, x_ene, px1, px2,px3 , x_b, y_b, sco, n_e
   c = [(255,255,255),(0,0,0),(255, 0, 0),(0, 255, 0)]
   px1=[[0,0,20,15,0],[0,0,7,2,1],[13,0,7,2,1],[0,2,2,2,1],[18,2,2,2,1],[5,5,3,1,1],[12,5,3,1,1],[9,8,2,1,1],[0,8,3,2,1],[17,8,3,2,1],[7,12,6,3,1],[0,13,3,2,1],[17,13,3,2,1],[5,11,3,2,1],[12,11,3,2,1]]
   px2=[[0,4,20,9,0],[3,0,2,2,0],[15,0,2,2,0],[5,2,2,2,0],[13,2,2,2,0],[0,4,3,2,1],[17,4,3,2,1],[0,6,1,1,1],[19,6,1,1,1],[2,8,2,5,1],[16,8,2,5,1],[6,13,3,2,0],[11,13,3,2,0],[6,11,8,2,1],[6,6,2,2,1],[12,6,2,2,1]]
@@ -57,10 +56,10 @@ def Spaces_invaders():
       rect(i*35+15,203,5,3,c[3])
 
   while True:
-    x_ene,y_ene,x_b,y_b,dec,vittesse,sc,bxe,bye,vie,enemies,n_e=12,30,0,0,10,1,0,[],[],3,[],48
+    x_ene,y_ene,x_b,y_b,dec,vittesse,sco,bxe,bye,vie,enemies,n_e=12,30,0,0,10,1,0,[],[],int(setting.varSelected("vie_inv")),[],48
     decor()
     player(x)
-    ds("score:{}".format(sc),310-(len("score:{}".format(sc))*10),200,c[0],c[1])
+    ds("score:{}".format(sco),310-(len("score:{}".format(sco))*10),200,c[0],c[1])
     move_ene()
     vie_graph(vie)
     while vie!=0:
@@ -90,12 +89,12 @@ def Spaces_invaders():
               if enemies[i][j]!="0":
                 if x_b<i*25+x_ene+20 and x_b>i*25+x_ene and y_b<j*25+y_ene+15 and y_b>j*25+y_ene :
                   if enemies[i][j]=="1":
-                    sc+=10
+                    sco+=10
                   elif enemies[i][j]=="2":
-                    sc+=20
+                    sco+=20
                   elif enemies[i][j]=="3":
-                    sc+=40
-                  ds("score:{}".format(sc),310-(len("score:{}".format(sc))*10),200,c[0],c[1])
+                    sco+=40
+                  ds("score:{}".format(sco),310-(len("score:{}".format(sco))*10),200,c[0],c[1])
                   enemies[i][j]="0"
                   n_e-=1
                   if n_e == 0:
@@ -149,7 +148,7 @@ def Spaces_invaders():
         return True
     rect(0,y_ene-1,320,91,c[1])
     ds("GAME OVER",115,55,c[0],c[1])
-    ds("score:{}".format(sc),110,75,c[0],c[1])
+    ds("score:{}".format(sco),110,75,c[0],c[1])
     ds("[EXE]",135,95,c[0],c[1])
     while True:
       if ke(52 or 4):

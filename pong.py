@@ -1,12 +1,11 @@
 from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
-from math import *
-from time import *
-from random import *
-
+from time import sleep
+from random import randint
+def load():return ["Pong","niveaux ",["easy","normal","hard"],"v_p",1]
 x1,y1,x2,y2 = 0,0,320,225
 
-def pong(c,para,setting):
+def launch(c,para,setting,sc=None,click=None):
   rect(0,0,x2,y2,c[1])
   while True:
     e_y=y =b_y= y2//2
