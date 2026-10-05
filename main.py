@@ -1,10 +1,7 @@
 from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
-from math import *
-from time import *
-from random import *
-from draw import *
-
+try:from draw import *
+except:raise ImportError("draw is require for this version")
 x1,y1,x2,y2=0,0,320,225
 para={"inter":0,"drap":0,"d_win":0,"sc_1":0,"sc_2":0,"ark":3,"ark_p":0,"adv":0,"nb_mine":15,"v_s":1,"v_p":3,"main":0,"c_txt":0}
 sc={"x":0,"o":0,"reload":False}
@@ -12,46 +9,33 @@ color={"jaune":[255,181,49],"cyan":[6,150,187],"rouge":[227,35,34],"mauve":[198,
 click={"nb_click":0,"cl_s":0,"cl_cl":1,"reborn":0,"t":0}
 c=[[255,181,49],[255,255,255],[0,0,0],[200,200,200],[255,0,0],[0,255,0],[0,0,255],[255,255,0],[255,0,255]]
 
-setting = Options([["Morpion","adver:",["bot random","bot ia","2 j"],"adv"],["Demineur","mine:",[str(n) for n in range(5,36)],"nb_mine",10],["Snake","vitesse * ",["1","2","3"],"v_s"],["Pong","niveaux ",["easy","normal","hard"],"v_p",1],["Main","colors:",list(color.keys()),"main"],["Couleur","",["white on black","black on white"],"c_txt"]],65,20,190,180)
+games,set=[],[]
+for i in ["morpion","demineur","pong","snake","arkanoid","cookie_clicker","space_invader","course_voiture"]:
+  try :
+    tryimport=__import__(i,None,None,"load").load()
+    if tryimport!=None:set.append(tryimport)
+    games.append(i)
+    print("load : "+i)
+  except Exception as e:print("missing : "+str(e))
+del tryimport
+games.append("setting")
+games.append("leave")
+set.append(["Main","colors:",list(color.keys()),"main"])
+set.append(["Couleur","",["white on black","black on white"],"c_txt"])
 
-### menu des jeux
+setting = Options(set,65,20,190,180)
+
 def main():
-  global para, setting
   rect(x1,y1,x2,y2,c[0])
-  rect(65,10,190,200,c[1])
-  menu = Carrousel(["morpion","demineur","pong","snake","arkanoid","cookie clicker","space invader","setting","leave"])
+  rect(65,(220//2-len(games)*10)-5,190,20*len(games)+10,c[1])
+  menu = Carrousel(games)
   ch = menu.Choisir(c)
-  if ch % 9 == 0:
-    from morpion import *
-    morpion(c,setting,sc)
-    return
-  elif ch % 9 == 1:
-    from demineur import *
-    demineur(c,para,setting)
-    return
-  elif ch % 9 == 2:
-    from pong import *
-    pong(c,para,setting)
-    return
-  elif ch % 9 == 3:
-    fin = False
-    while fin != True :
-      from snake import *
-      fin = snake(c,para,setting)
-    return
-  elif ch % 9 == 4:
-    from arkanoid import *
-    arkanoid(c,para)
-    return
-  elif ch % 9 == 5:
-    from cookie_clicker import *
-    cookie_clicker(c,click)
-    return
-  elif ch % 9 == 6:
-    from space_invader import *
-    Spaces_invaders()
-    return
-  elif ch % 9 == 7:
+  for n in range(0,len(games)-2):
+    if ch % len(games) == n:
+      game=__import__(games[n],globals(),locals,['launch'])
+      game.launch(c=c,para=para,setting=setting,sc=sc,click=click)
+      return
+  if ch % len(games) == len(games)-2:
     setting.launch(c)
     if setting.find("c_txt") == 0:
       c[1]=[255,255,255]
@@ -61,7 +45,7 @@ def main():
       c[2]=[255,255,255]
     c[0]= color[setting.varSelected("main")]
     return 
-  elif ch % 9 == 8:
+  elif ch % len(games) == len(games)-1:
     bye+1
 
 while True:

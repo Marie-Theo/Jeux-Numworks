@@ -1,14 +1,13 @@
 from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
-from math import *
-from time import *
-from random import *
+from time import sleep
+from random import randint as rng
 from draw import *
-
+def load():return
 x1,y1,x2,y2 = 0,0,320,225
  
 
-def arkanoid(c,para):
+def launch(c,para,setting=None,sc=None,click=None):
   def maps():
     for i in range(5):
       cible.append([])
@@ -35,11 +34,11 @@ def arkanoid(c,para):
     rect(0,0,x2,y2,c[2])
     cible = []
     b_y,b_x,bar_x,bar_y = x2//2-40,y2//2+50,x2//2,y2-20
-    b_y_s=randint(4,5)
-    if 1== randint(1,2):
-      b_x_s = randint(3,5)
+    b_y_s=rng(4,5)
+    if 1== rng(1,2):
+      b_x_s = rng(3,5)
     else:
-      b_x_s= randint(-5,-3)
+      b_x_s= rng(-5,-3)
     para["ark"]-=1
     n1,n2 = True,True
   
@@ -101,18 +100,18 @@ def arkanoid(c,para):
           rect(bar_x-25,bar_y,50,10,c[2])
           b_y,b_x,bar_x,bar_y = y2//2,x2//2,x2//2,y2-20
           rect(bar_x-25,bar_y,50,10,c[0])
-          b_y_s=randint(4,5)
-          if 1== randint(1,2):
-            b_x_s = randint(3,5)
+          b_y_s=rng(4,5)
+          if 1== rng(1,2):
+            b_x_s = rng(3,5)
           else:
-            b_x_s= randint(-5,-3)
+            b_x_s= rng(-5,-3)
         else:
           sleep(0.3)
           para["ark"]=3
           ch = 0
           rect(x2//2-60,y2//2-25,120,47,c[0])
           menu = Carrousel(["recommencer","leave"])
-          ch = menu.Choisir()
+          ch = menu.Choisir(c)
           if ch % 2 ==0:
             para["ark_p"]=0
             break

@@ -1,32 +1,29 @@
 from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
-from math import *
-from time import *
-from random import *
+from time import sleep
+from random import randint
+def load():return ["Demineur","mine:",[str(n) for n in range(5,36)],"nb_mine",10]
 
-x1,y1,x2,y2 = 0,0,320,225
-
-def demineur(c,para,setting):
+def launch(c,para,setting,sc=None,click=None):
   co = [c[5],c[6],c[0],c[4],c[2],c[8],c[8],c[8]]
-  rect(0,0,x2,y2,c[0])
-  rect(60,0,x2-60,y2,c[2])
+  rect(0,0,320,225,c[0])
+  rect(60,0,320-60,225,c[2])
+
+  def drawReturn(i,j):
+    rect(65+i*21,6+j*21,20,20,c[1])
+    return 0
 
   while True:
     start = True
-    gri = [[],[],[],[],[],[],[],[],[],[],[],[]]
-    dec = [[],[],[],[],[],[],[],[],[],[],[],[]]
     ### crée maps
-    for i in range(12):
-      for j in range(10):
-        gri[i].append(0)
-        dec[i].append(False)
-        rect(65+i*21,6+j*21,20,20,c[1])
+    gri = [[drawReturn(i,j) for j in range(0,10)] for i in range(0,12)]
+    dec = [[False for j in range(0,10) ] for i in range(0,12)]
     def create_maps(ch_x,ch_y):
       ### initialiser les mine
       for z in range(int(setting.varSelected("nb_mine"))):
         while True :
           x,y = randint(0,11),randint(0,9)
-          if gri[x][y] == 0 and x != ch_x and y != ch_y:
+          if gri[x][y] == 0 and not (x == ch_x and y == ch_y):
             gri[x][y] = "b"
             break
       ### definir le nb de mine autour

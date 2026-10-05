@@ -1,13 +1,16 @@
 from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
-from math import *
-from time import *
+from time import sleep, monotonic
+def load():return
 x1,y1,x2,y2 = 0,0,320,225
 cookie = [[0,0,0,1,1,1,0,0,0],[0,1,1,1,2,1,1,1,0],[0,1,1,1,1,1,1,2,0],[1,2,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,2,1],[0,2,1,2,1,1,1,1,0],[0,1,1,1,1,1,2,1,0],[0,0,0,1,1,1,0,0,0],(228,141,74),(105,30,0)]
 
-def cookie_clicker(c,click):
+def launch(c,click,para=None,setting=None,sc=None):
   global t1,pt1
 
+  def wait(x):
+    while ke(x):
+      continue
   def loop():
     n = 100000
     while True:
@@ -81,13 +84,11 @@ def cookie_clicker(c,click):
       if ke(1):
         ch-=1
         d_buy(ch)
-        while ke(1) :
-          continue
+        wait(1)
       elif ke(2):
         ch+=1
         d_buy(ch)
-        while ke(2) :
-          continue
+        wait(2)
       elif ke(48):
         loop()
       if ke(4) :
@@ -123,13 +124,11 @@ def cookie_clicker(c,click):
       if ke(1):
         ch-=1
         d_reborn(ch)
-        while ke(1) :
-          continue
+        wait(1)
       elif ke(2):
         ch+=1
         d_reborn(ch)
-        while ke(2) :
-          continue
+        wait(2)
       if ke(4) :
         if ch%2==0:
           return False
@@ -194,16 +193,13 @@ def cookie_clicker(c,click):
     if ke(1):
       ch-=1
       graf()
-      while ke(1) :
-        continue
+      wait(1)
     elif ke(2):
       ch+=1
       graf()
-      while ke(2) :
-        continue
+      wait(2)
     if ke(4) :
-      while ke(4) :
-        continue
+      wait(4)
       if ch % 4==0:
         click["nb_click"]+=click["cl_cl"]*(1+click["reborn"])
         if int(click["nb_click"]) == click["nb_click"]-0.5:
@@ -220,7 +216,6 @@ def cookie_clicker(c,click):
         if r == True:
           return
         graf()
-      while ke(4) :
-        continue
+      wait(4)
     if ke(17):
       return
