@@ -6,7 +6,7 @@ from random import *
 
 x1,y1,x2,y2 = 0,0,320,225
 
-def demineur(c,para):
+def demineur(c,para,setting):
   co = [c[5],c[6],c[0],c[4],c[2],c[8],c[8],c[8]]
   rect(0,0,x2,y2,c[0])
   rect(60,0,x2-60,y2,c[2])
@@ -23,7 +23,7 @@ def demineur(c,para):
         rect(65+i*21,6+j*21,20,20,c[1])
     def create_maps(ch_x,ch_y):
       ### initialiser les mine
-      for z in range(para["nb_mine"]):
+      for z in range(int(setting.varSelected("nb_mine"))):
         while True :
           x,y = randint(0,11),randint(0,9)
           if gri[x][y] == 0 and x != ch_x and y != ch_y:
@@ -42,7 +42,7 @@ def demineur(c,para):
                   if gri[x__][y__] == 'b' :
                     n+=1
             gri[i][j] = n
-    
+
     ### enlever tous les 0 autour
     def decouvrir():
       n= (-1,1)
@@ -75,7 +75,7 @@ def demineur(c,para):
       for l in range(9):
         for j in range(l):
           sp(x-l+9,y-j+4,c[4])
-    
+
     def draw_case(x,y,ch):
       if ch =="draw_drap":
         draw_drap(30,10)
@@ -107,7 +107,7 @@ def demineur(c,para):
         for y in range(10):
           if gri[x][y] == "b" and dec[x][y] == "drap":
             drap_bon += 1
-      if para["nb_mine"] == drap_bon:
+      if int(setting.varSelected("nb_mine")) == drap_bon:
         para["d_win"] += 1
         return True
       
@@ -116,7 +116,7 @@ def demineur(c,para):
     para["drap"]=0
     draw_case(0,0,"draw_drap")
     rect(10,20,50,20,c[0])
-    ds("{}/{}".format(para["drap"],para["nb_mine"]),10,20,c[2],c[0])
+    ds("{}/{}".format(para["drap"],int(setting.varSelected("nb_mine"))),10,20,c[2],c[0])
     ds("win:",5,40,c[2],c[0])
     ds("{}".format(para["d_win"]),5,60,c[2],c[0])
 
@@ -158,15 +158,15 @@ def demineur(c,para):
               dec[x][y] = True
               draw_case(x,y,"vide")
           rect(10,20,50,20,c[0])
-          ds("{}/{}".format(para["drap"],para["nb_mine"]),10,20,c[2],c[0])
+          ds("{}/{}".format(para["drap"],int(setting.varSelected("nb_mine"))),10,20,c[2],c[0])
           sleep(3)
           break
         elif gri[ch_x][ch_y] == 0:
           decouvrir()
           rect(10,20,50,20,c[0])
-          ds("{}/{}".format(para["drap"],para["nb_mine"]),10,20,c[2],c[0])
+          ds("{}/{}".format(para["drap"],int(setting.varSelected("nb_mine"))),10,20,c[2],c[0])
       if ke(4) :
-        if dec[ch_x][ch_y] == False and para["nb_mine"] > para["drap"]:
+        if dec[ch_x][ch_y] == False and int(setting.varSelected("nb_mine")) > para["drap"]:
           dec[ch_x][ch_y] = "drap"
           para["drap"]+=1
         elif dec[ch_x][ch_y] == "drap":
@@ -174,8 +174,8 @@ def demineur(c,para):
           para["drap"]-=1
         draw_case(ch_x,ch_y,"select")
         rect(10,20,50,20,c[0])
-        ds("{}/{}".format(para["drap"],para["nb_mine"]),10,20,c[2],c[0])
-        if para["nb_mine"] == para["drap"]:
+        ds("{}/{}".format(para["drap"],int(setting.varSelected("nb_mine"))),10,20,c[2],c[0])
+        if int(setting.varSelected("nb_mine")) == para["drap"]:
           win = d_win() 
           if win == True :
             sleep(2)

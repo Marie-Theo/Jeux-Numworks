@@ -6,7 +6,7 @@ from random import *
 
 x1,y1,x2,y2 = 0,0,320,225
 
-def snake(c,para):
+def snake(c,para,setting):
   def death():
     for x in range(16):
       for y in range(11):
@@ -33,7 +33,7 @@ def snake(c,para):
     rect(b_x*20+2,b_y*20+2,16,16,c[4])
     
     while True :
-      sleep(0.3/para["v_s"])
+      sleep(0.3/int(setting.find("v_s"))+1)
       if ke(17):
         return True
       direc=dire
