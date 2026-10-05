@@ -3,6 +3,7 @@ from ion import keydown as ke
 from math import *
 from time import *
 from random import *
+from draw import *
 
 x1,y1,x2,y2 = 0,0,320,225
  
@@ -14,15 +15,6 @@ def arkanoid(c,para):
       for j in range(10):
         cible[i].append(4-i)
         rect(12+30*j,10+20*i,25,15,c[4+i])
-    
-  def d_m(ch):
-    ds("{} p".format(para["ark_p"]),x2//2-30,y2//2,c[1],c[2])
-    ds("recommencé",x2//2-50,y2//2+20,c[1],c[2])
-    ds("leave",x2//2-25,y2//2+40,c[1],c[2])
-    if ch%2 == 0:
-      ds("recommencé",x2//2-50,y2//2+20,c[1],c[3])
-    if ch%2 == 1:
-      ds("leave",x2//2-25,y2//2+40,c[1],c[3])
 
   def vie():
     rect(5,y2-8,x2-10,5,c[2])
@@ -100,10 +92,10 @@ def arkanoid(c,para):
       elif  6 > b_y :
         b_y_s-= b_y_s*2
       elif y2-5 < b_y :
+        rect(b_x-5,b_y-5,10,10,c[4])
+        sleep(0.2)
         if para["ark"] != 0:
           para["ark"]-=1
-          rect(b_x-5,b_y-5,10,10,c[4])
-          sleep(0.2)
           rect(b_x-5,b_y-5,10,10,c[2])
           vie()
           rect(bar_x-25,bar_y,50,10,c[2])
@@ -115,31 +107,16 @@ def arkanoid(c,para):
           else:
             b_x_s= randint(-5,-3)
         else:
-          rect(b_x-5,b_y-5,10,10,c[4])
-          sleep(0.5)
+          sleep(0.3)
           para["ark"]=3
           ch = 0
-          rect(x2//2-55,y2//2-5,110,50,c[2])
-          d_m(ch)
-          while True:
-            if ke(17):
-              return
-            if ke(1) :
-              ch +=1
-              d_m(ch)
-              sleep(0.1)
-            elif ke(2) :
-              ch+=1
-              d_m(ch)
-              sleep(0.1)
-            elif ke(4):
-              if ch % 2 ==0:
-                para["ark_p"]=0
-                break
-              if ch % 2 ==1:
-                return
-            elif ke(17):
-              return
-          break
+          rect(x2//2-60,y2//2-25,120,47,c[0])
+          menu = Carrousel(["recommencer","leave"])
+          ch = menu.Choisir()
+          if ch % 2 ==0:
+            para["ark_p"]=0
+            break
+          if ch % 2 ==1:
+            return
       if ke(17):
         return
