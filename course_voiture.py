@@ -3,6 +3,7 @@ from ion import keydown as ke
 from time import sleep, monotonic
 from random import randint as rng
 def load():return ["Course voiture","vitesse * ",["1","2","3"],"car_racing"]
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 bordure = 0
 ## couleur
 color={"vert":[39, 140, 0],"jaune":[255, 255, 0],"blanc":[255, 255, 255],"cyan":[0, 255, 255],"rouge":[255, 0, 0],"bleu" :[0, 152, 255],"gris":[50,50,60],"noir":[0,0,0]}

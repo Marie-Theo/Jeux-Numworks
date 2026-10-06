@@ -4,6 +4,7 @@ from math import sqrt
 from time import sleep
 from random import randint
 def load():return ["Morpion","adver:",["bot random","bot ia","2 j"],"adv"]
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 x1,y1,x2,y2 = 0,0,320,225
 
 def launch(c,setting,sc,para=None,click=None):

@@ -2,6 +2,7 @@ from kandinsky import fill_rect as rect , draw_string as ds,set_pixel as sp
 from ion import keydown as ke
 from time import sleep, monotonic
 def load():return
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 x1,y1,x2,y2 = 0,0,320,225
 cookie = [[0,0,0,1,1,1,0,0,0],[0,1,1,1,2,1,1,1,0],[0,1,1,1,1,1,1,2,0],[1,2,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,2,1],[0,2,1,2,1,1,1,1,0],[0,1,1,1,1,1,2,1,0],[0,0,0,1,1,1,0,0,0],(228,141,74),(105,30,0)]
 

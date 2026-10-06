@@ -3,6 +3,7 @@ from ion import keydown as ke
 from time import sleep
 from random import randint
 def load():return ["Pong","niveaux ",["easy","normal","hard"],"v_p",1]
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 x1,y1,x2,y2 = 0,0,320,225
 
 def launch(c,para,setting,sc=None,click=None):

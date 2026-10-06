@@ -3,6 +3,7 @@ from ion import keydown as ke
 from time import sleep
 from random import randint
 def load():return ["Space invader","nombre de vie:",["1","2","3","4","5"],"vie_inv",2]
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 def launch(setting,c=None,click=None,para=None,sc=None):
   global x_ene, x_ene, px1, px2,px3 , x_b, y_b, sco, n_e
   c = [(255,255,255),(0,0,0),(255, 0, 0),(0, 255, 0)]

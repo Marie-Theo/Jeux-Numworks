@@ -4,6 +4,7 @@ from time import sleep
 from random import randint as rng
 from draw import *
 def load():return
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 x1,y1,x2,y2 = 0,0,320,225
  
 

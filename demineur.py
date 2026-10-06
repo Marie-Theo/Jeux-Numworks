@@ -3,7 +3,7 @@ from ion import keydown as ke
 from time import sleep
 from random import randint
 def load():return ["Demineur","mine:",[str(n) for n in range(5,36)],"nb_mine",10]
-
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 def launch(c,para,setting,sc=None,click=None):
   co = [c[5],c[6],c[0],c[4],c[2],c[8],c[8],c[8]]
   rect(0,0,320,225,c[0])

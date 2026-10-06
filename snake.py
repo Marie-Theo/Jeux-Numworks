@@ -3,6 +3,7 @@ from ion import keydown as ke
 from time import sleep, monotonic
 from random import randint as rng
 def load():return ["Snake","vitesse * ",["1","2","3"],"v_s"]
+if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
 x1,y1,x2,y2 = 0,0,320,225
 
 def launch(c,setting,para=None,sc=None,click=None):
