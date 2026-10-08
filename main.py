@@ -16,7 +16,7 @@ for i in ["morpion","demineur","pong","snake","arkanoid","cookie_clicker","space
     if tryimport!=None:set.append(tryimport)
     games.append(i)
     print("load : "+i)
-  except Exception as e:print("missing : "+str(e))
+  except Exception as e:print("can't load : "+str(e))
 del tryimport
 games.append("setting")
 games.append("leave")

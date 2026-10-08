@@ -3,8 +3,6 @@ from ion import keydown as ke
 from time import sleep, monotonic
 from random import randint as rng
 def load():return ["Snake","vitesse * ",["1","2","3"],"v_s"]
-if __name__ == "__main__":print("require main and draw from https://my.numworks.com/python/tmarie")
-x1,y1,x2,y2 = 0,0,320,225
 
 def launch(c,setting,para=None,sc=None,click=None):
 
@@ -19,7 +17,7 @@ def launch(c,setting,para=None,sc=None,click=None):
   while True: 
     taille = 1
     s_x,s_y=5,5
-    rect(0,0,x2,y2,c[2])
+    rect(0,0,320,225,c[2])
     rect(s_x*20,s_y*20,20,20,c[5])
     dire =  "right"
     gri = []
