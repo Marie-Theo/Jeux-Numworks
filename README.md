@@ -5,7 +5,7 @@ Ce projet a pour but de proposer des jeux optimisés en espace, via des programm
 
 ## Installation
 
-Vous trouverai tous les programmes sur mon compte Numworks ([tmarie](https://my.numworks.com/python/tmarie "https://my.numworks.com/python/tmarie")).
+Vous retrouverai tous les programmes sur mon compte Numworks ([tmarie](https://my.numworks.com/python/tmarie "https://my.numworks.com/python/tmarie")) prêt à etre installé.
 
 Les jeux proposés par ce projet ne peuvent pas être exécutés directement dans l'émulateur web, ils requièrent tous des variables données par le programme [main.py](https://my.numworks.com/python/tmarie/main "https://my.numworks.com/python/tmarie/main") qui ne peut être import par l'émulateur.
 
@@ -45,8 +45,7 @@ Pour créer de nouveaux jeux :
 1. Ajoutez le nom de votre programme au Main dans la liste à la ligne 13, main ne teste que les programmes dont il connaît l'existence.
 2. Ajouter une fonction nommée load (utile, pour que main le trouve) qui retournant soit des paramètre à ajouter dans setting ou rien.
 ```python
-def load():
-return ['nom','detail', ['choix 1','choix 2', ...], 'constante', n_default] | None
+def load():return ['nom','detail', ['choix 1','choix 2', ...], 'constante', n_default] | None
 
 # constante : le texte à saisir pour récupérer la valeur choisie avec setting.varSelected('variable')
 # n_default : numéro du choix par default dans la liste des choix
@@ -54,17 +53,17 @@ return ['nom','detail', ['choix 1','choix 2', ...], 'constante', n_default] | No
 3. Main exécute la fonction launch() quand on choisie un programme, votre programme doit etre executé via launch et prendre en paramètre les différents paramètres donnés dans main.
 ```python
 def launch(c=None,para=None,setting=None,sc=None,click=None):
-# votre programme...
+    # votre programme...
 ```
 4. Pour proposer à l'utilisateur de revenir au main, faite un retourn pour arrêter le programme pendant l'exécution si keydown(17) et pressé. [mapping des touches de la calculatrice](https://tiplanet.org/forum/viewtopic.php?f=100&t=26294 "https://tiplanet.org/forum/viewtopic.php?f=100&t=26294")
 ```python
 from ion import keydown
-...
-def launch(c=None,para=None,setting=None,sc=None,click=None):
-...
-while True:
-if keydown(17):return
-...
+    ...
+    def launch(c=None,para=None,setting=None,sc=None,click=None):
+        ...
+        while True:
+            if keydown(17):return
+            ...
 ```
 5. Si vous ajoutez un jeu via un fork, merci de préciser si besoin les touche de votre jeu dans le README.
 6. Le but étant que les jeux ne prennent pas trop de place, je vous conseil de mettre l'indentation à 2 puisque c'est ce qui prend le plus de place.
