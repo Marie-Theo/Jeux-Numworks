@@ -69,6 +69,4 @@ if keydown(17):return
 5. Si vous ajoutez un jeu via un fork, merci de préciser si besoin les touche de votre jeu dans le README.
 6. Le but étant que les jeux ne prennent pas trop de place, je vous conseil de mettre l'indentation à 2 puisque c'est ce qui prend le plus de place.
 
-### Proposition
-
 Je reste ouvert à toute proposition de modification ou même de conseil, en espérant que mon projet vous amuse autant que moi.
